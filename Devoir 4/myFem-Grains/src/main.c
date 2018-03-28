@@ -26,10 +26,10 @@ int main(void)
     double tol     = 1e-6;
     double t       = 0;
     double iterMax = 100;
-//    femGrains* theGrains = femGrainsCreateSimple(n,radius,mass,radiusIn,radiusOut);
+    femGrains* theGrains = femGrainsCreateSimple(n,radius,mass,radiusIn,radiusOut);
    
   //  A decommenter pour obtenir l'exemple de la seance d'exercice :-)
-    femGrains* theGrains = femGrainsCreateTiny(radiusIn,radiusOut);;
+  //  femGrains* theGrains = femGrainsCreateTiny(radiusIn,radiusOut);;
 
     GLFWwindow* window = glfemInit("MECA1120 : Homework 4");
     glfwMakeContextCurrent(window);

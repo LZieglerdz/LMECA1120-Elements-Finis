@@ -61,8 +61,7 @@ double femGrainsContactIterate(femGrains *myGrains, double dt, int iter)
 			dvContacts[k] += dv;
 
 			zeta = fmax(zeta, fabs(dv));
-			k++;
-		printf("zeta dv %.2f %.2f \n", zeta, dv);	
+			k++;	
 		}
 	}	
 	
@@ -78,7 +77,6 @@ double femGrainsContactIterate(femGrains *myGrains, double dt, int iter)
 		vy[i]		-= dv*nrml[1];
 		dvBoundary[i]	+= dv;
 		zeta 		 = fmax(zeta, fabs(dv));
-		printf("zeta dv %.2f %.2f \n", zeta, dv);
 
 	}
 
