@@ -1,4 +1,4 @@
-# Install script for directory: /home/admin/Documents/EPL/LMECA1120 - Elements Finis/Projet2018/myFem-Grains/glfw-3.2.1
+# Install script for directory: /home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/glfw-3.2.1
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -34,7 +34,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Projet2018/myFem-Grains/build/glfw-3.2.1/src/cmake_install.cmake")
+  include("/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/build/glfw-3.2.1/src/cmake_install.cmake")
 
 endif()
 

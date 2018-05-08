@@ -1,4 +1,4 @@
-# Install script for directory: /home/admin/Documents/EPL/LMECA1120 - Elements Finis/Projet2018/myFem-Grains/glfw-3.2.1/src
+# Install script for directory: /home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/glfw-3.2.1/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

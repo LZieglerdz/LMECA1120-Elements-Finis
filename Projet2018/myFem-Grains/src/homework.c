@@ -188,16 +188,23 @@ void femGrainsUpdate(femGrains *myGrains, double dt, double tol, double iterMax)
     double gamma       = myGrains->gamma;
     double gx          = myGrains->gravity[0];
     double gy          = myGrains->gravity[1];
-
+    double omega       = 1;
+    double theta       = omega* M_PI * dt;
+    double thetaDot    = omega;
 //
 // -1- Calcul des nouvelles vitesses des grains sur base de la gravit� et de la trainee
 //
 
     for(i = 0; i < n; i++) {
-        double fx = m[i] * gx - gamma * vx[i];
-        double fy = m[i] * gy - gamma * vy[i];
-        vx[i] += fx * dt / m[i];
-        vy[i] += fy * dt / m[i];  }
+      double l = sqrt(pow(x[i],2)+pow(y[i],2));
+      double vxFluid = -l*thetaDot*sin(theta);
+      double vyFluid =  l*thetaDot*cos(theta);
+
+      double fx = m[i] * gx - gamma * (vx[i] );
+      double fy = m[i] * gy - gamma * (vy[i] );
+      vx[i] += fx * dt / m[i] + vxFluid;
+      vy[i] += fy * dt / m[i] + vyFluid;
+    }
 
 //
 // -2- Correction des vitesses pour tenir compte des contacts

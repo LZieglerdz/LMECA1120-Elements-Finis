@@ -54,7 +54,7 @@ int main(void)
         glfemReshapeWindows(radiusOut,w,h);
         glfemPlotField(theProblem->mesh,theProblem->system->B);
         for (i=0 ;i < theGrains->n; i++) {
-            glColor3f(1,0,0);
+            glColor3f(102/255,255/255,102/255);
             glfemDrawDisk(theGrains->x[i],theGrains->y[i],theGrains->r[i]); }
         glColor3f(0,0,0); glfemDrawCircle(0,0,radiusOut);
         glColor3f(0,0,0); glfemDrawCircle(0,0,radiusIn);

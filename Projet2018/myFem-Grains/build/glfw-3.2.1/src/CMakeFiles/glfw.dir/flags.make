@@ -6,7 +6,7 @@ C_FLAGS = -fPIC   -Wall
 
 C_DEFINES = -D_GLFW_USE_CONFIG_H
 
-C_INCLUDES = -I"/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Projet2018/myFem-Grains/glfw-3.2.1/include" -I"/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Projet2018/myFem-Grains/glfw-3.2.1/src" -I"/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Projet2018/myFem-Grains/build/glfw-3.2.1/src" 
+C_INCLUDES = -I"/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/glfw-3.2.1/include" -I"/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/glfw-3.2.1/src" -I"/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/build/glfw-3.2.1/src" 
 
 # Custom flags: glfw-3.2.1/src/CMakeFiles/glfw.dir/context.c.o_FLAGS = -Wdeclaration-after-statement
 

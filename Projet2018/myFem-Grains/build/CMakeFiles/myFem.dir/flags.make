@@ -6,5 +6,5 @@ C_FLAGS =
 
 C_DEFINES = -Dgraphic
 
-C_INCLUDES = -I"/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Projet2018/myFem-Grains/glfw-3.2.1/include" 
+C_INCLUDES = -I"/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/glfw-3.2.1/include" 
 
