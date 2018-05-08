@@ -75,12 +75,8 @@ fem.h
 /home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Devoir 5/myFem-BandSolver/src/fem.h
 
 /home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Devoir 5/myFem-BandSolver/src/homework.c
-stdlib.h
-/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Devoir 5/myFem-BandSolver/src/stdlib.h
 fem.h
 /home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Devoir 5/myFem-BandSolver/src/fem.h
-math.h
-/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Devoir 5/myFem-BandSolver/src/math.h
 
 /home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Devoir 5/myFem-BandSolver/src/main.c
 glfem.h

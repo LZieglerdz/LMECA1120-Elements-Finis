@@ -99,7 +99,8 @@ void femPoissonSolve(femPoissonProblem *theProblem)
             	int iNode = theEdges->edges[iEdge].node[i];
             	double xloc = theMesh->X[iNode];
             	double yloc = theMesh->Y[iNode];
-            	femFullSystemConstrain(theSystem,iNode,0.0);  }}}
+            	femFullSystemConstrain(theSystem,iNode,0.0);
+            }}}
 
     femFullSystemEliminate(theSystem);
 }
@@ -187,7 +188,7 @@ void femGrainsUpdate(femGrains *myGrains, double dt, double tol, double iterMax)
     double *vx         = myGrains->vx;
     double gamma       = myGrains->gamma;
     double gx          = myGrains->gravity[0];
-    double gy          = myGrains->gravity[1];
+    double gy          = myGrains->gravity[0];   //Supposons que la pression reste hydrostatique et s'oppose TOTALEMENT a la gravité
     double omega       = 1;
     double theta       = omega* M_PI * dt;
     double thetaDot    = omega;

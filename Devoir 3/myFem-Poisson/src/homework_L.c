@@ -11,8 +11,8 @@
 femPoissonProblem *femPoissonCreate(const char *filename)
 {
     femPoissonProblem *theProblem = malloc(sizeof(femPoissonProblem));
-    theProblem->mesh  = femMeshRead(filename);
-    theProblem->edges = femEdgesCreate(theProblem->mesh);
+    theProblem->mesh  = femMeshRead(filename);           
+    theProblem->edges = femEdgesCreate(theProblem->mesh);  
     if (theProblem->mesh->nLocalNode == 4) {
         theProblem->space = femDiscreteCreate(4,FEM_QUAD);
         theProblem->rule = femIntegrationCreate(4,FEM_QUAD); }
@@ -35,7 +35,7 @@ void femPoissonFree(femPoissonProblem *theProblem)
     femMeshFree(theProblem->mesh);
     free(theProblem);
 }
-
+    
 # endif
 # ifndef NOMESHLOCAL
 
@@ -51,42 +51,6 @@ void femMeshLocal(const femMesh *theMesh, const int i, int *map, double *x, doub
 
 # endif
 # ifndef NOPOISSONSOLVE
-
-
-double innerRadius(femPoissonProblem *theProblem){
-  int i;
-  double iRad,x,y,dist;
-
-  x = theProblem->mesh->X[0];
-  y = theProblem->mesh->Y[0];
-  iRad = sqrt(pow(x,2)+pow(y,2));
-  for(i = 1; i < theProblem->system->size; i++){
-    x = theProblem->mesh->X[i];
-    y = theProblem->mesh->Y[i];
-    dist = sqrt(pow(x,2)+pow(y,2));
-    if (dist < iRad)
-      iRad = dist;
-  }
-  return iRad;
-}
-double outerRadius(femPoissonProblem *theProblem){
-  int i;
-  double iRad,x,y,dist;
-
-  x = theProblem->mesh->X[0];
-  y = theProblem->mesh->Y[0];
-  iRad = sqrt(pow(x,2)+pow(y,2));
-  for(i = 1; i < theProblem->system->size; i++){
-    x = theProblem->mesh->X[i];
-    y = theProblem->mesh->Y[i];
-    dist = sqrt(pow(x,2)+pow(y,2));
-    if (dist > iRad)
-      iRad = dist;
-  }
-  return iRad;
-}
-
-
 
 
 void femPoissonSolve(femPoissonProblem *theProblem)
@@ -107,7 +71,7 @@ void femPoissonSolve(femPoissonProblem *theProblem)
 			dxdeta	= 0;
 			dydeta	= 0;
 			femDiscretePhi2(theProblem->space, xi, eta, phi);
-			femDiscreteDphi2(theProblem->space, xi, eta, dphidxi, dphideta);
+			femDiscreteDphi2(theProblem->space, xi, eta, dphidxi, dphideta); 
 			for (i = 0; i < theProblem->space->n; i++) {
 				xLocal	+= x[i]*phi[i];
 				yLocal	+= y[i]*phi[i];
@@ -115,13 +79,13 @@ void femPoissonSolve(femPoissonProblem *theProblem)
 				dydxi	+= y[i]*dphidxi[i];
 				dxdeta 	+= x[i]*dphideta[i];
 				dydeta 	+= y[i]*dphideta[i];
-			}
+			}	
 			double jacobian = fabs(dxdxi * dydeta - dydxi * dxdeta);
 			for (i = 0; i < theProblem->space->n; i++) {							//calcul des dphidx et dphidy
 				dphidx[i] = (1/jacobian) * (dphidxi[i]*dydeta - dphideta[i]*dydxi);
 				dphidy[i] = (1/jacobian) * (dphidxi[i]*dxdeta - dphideta[i]*dxdxi);
 			}
-			for (i = 0; i < theProblem->space->n; i++) {							//remplissage de la matrice A par integration
+			for (i = 0; i < theProblem->space->n; i++) {							//remplissage de la matrice A par integration 
 				for (j = 0; j < theProblem->space->n; j++) {
 					double f = (dphidx[i]*dphidx[j] + dphidy[i]*dphidy[j]) * jacobian;
 					theProblem->system->A[map[i]][map[j]] += weight * f;
@@ -130,19 +94,8 @@ void femPoissonSolve(femPoissonProblem *theProblem)
 			}
 		}
 	}
-  // determiner si edge est au Rmax
-
-    printf("%f \n", innerRadius(theProblem));
-    printf("%f \n", outerRadius(theProblem));
-    double mRad = outerRadius(theProblem) - innerRadius(theProblem);
-
-    for (i = 2011; i<2652; i++){
-      theProblem->edges->edges[i].elem[1] = 0;
-    }
-
-    for (edge = 0; edge < theProblem->edges->nEdge; edge++) {
-      if (theProblem->edges->edges[edge].elem[1] < 0  ) { //&& sqrt(pow(theProblem->edges->edges[edge].node[0],2) + pow(theProblem->edges->edges[edge].node[1],2)) > mRad
-        printf("%d %d \n", edge, theProblem->edges->edges[edge].elem[1]);
+		for (edge = 0; edge < theProblem->edges->nEdge; edge++) {
+			if (theProblem->edges->edges[edge].elem[1] < 0) {
 				for (i = 0; i < 2; i++) {
 					int node = theProblem->edges->edges[edge].node[i];
 					femFullSystemConstrain(theProblem->system,node,0);
