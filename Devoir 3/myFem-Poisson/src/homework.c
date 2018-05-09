@@ -53,47 +53,13 @@ void femMeshLocal(const femMesh *theMesh, const int i, int *map, double *x, doub
 # ifndef NOPOISSONSOLVE
 
 
-double innerRadius(femPoissonProblem *theProblem){
-  int i;
-  double iRad,x,y,dist;
-
-  x = theProblem->mesh->X[0];
-  y = theProblem->mesh->Y[0];
-  iRad = sqrt(pow(x,2)+pow(y,2));
-  for(i = 1; i < theProblem->system->size; i++){
-    x = theProblem->mesh->X[i];
-    y = theProblem->mesh->Y[i];
-    dist = sqrt(pow(x,2)+pow(y,2));
-    if (dist < iRad)
-      iRad = dist;
-  }
-  return iRad;
-}
-double outerRadius(femPoissonProblem *theProblem){
-  int i;
-  double iRad,x,y,dist;
-
-  x = theProblem->mesh->X[0];
-  y = theProblem->mesh->Y[0];
-  iRad = sqrt(pow(x,2)+pow(y,2));
-  for(i = 1; i < theProblem->system->size; i++){
-    x = theProblem->mesh->X[i];
-    y = theProblem->mesh->Y[i];
-    dist = sqrt(pow(x,2)+pow(y,2));
-    if (dist > iRad)
-      iRad = dist;
-  }
-  return iRad;
-}
-
-
-
-
 void femPoissonSolve(femPoissonProblem *theProblem)
 {
 	int elem, locNode, edge, i,j, map[4];
 	double x[4], y[4], phi[4], dphidx[4], dphidy[4], dphidxi[4], dphideta[4];
-	for (elem = 0; elem < theProblem->mesh->nElem; elem++){
+
+
+  for (elem = 0; elem < theProblem->mesh->nElem; elem++){
 		femMeshLocal(theProblem->mesh, elem, map, x, y);
 		for (locNode = 0; locNode < theProblem->rule->n; locNode++) {
 			double xi, eta, weight, xLocal, yLocal, dxdxi, dydxi, dxdeta, dydeta;
@@ -130,19 +96,8 @@ void femPoissonSolve(femPoissonProblem *theProblem)
 			}
 		}
 	}
-  // determiner si edge est au Rmax
-
-    printf("%f \n", innerRadius(theProblem));
-    printf("%f \n", outerRadius(theProblem));
-    double mRad = outerRadius(theProblem) - innerRadius(theProblem);
-
-    for (i = 2011; i<2652; i++){
-      theProblem->edges->edges[i].elem[1] = 0;
-    }
-
-    for (edge = 0; edge < theProblem->edges->nEdge; edge++) {
-      if (theProblem->edges->edges[edge].elem[1] < 0  ) { //&& sqrt(pow(theProblem->edges->edges[edge].node[0],2) + pow(theProblem->edges->edges[edge].node[1],2)) > mRad
-        printf("%d %d \n", edge, theProblem->edges->edges[edge].elem[1]);
+		for (edge = 0; edge < theProblem->edges->nEdge; edge++) {
+			if (theProblem->edges->edges[edge].elem[1] < 0) {
 				for (i = 0; i < 2; i++) {
 					int node = theProblem->edges->edges[edge].node[i];
 					femFullSystemConstrain(theProblem->system,node,0);

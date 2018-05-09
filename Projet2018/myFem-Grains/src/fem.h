@@ -71,7 +71,8 @@ typedef struct {
     femEdges *edges;
     femDiscrete *space;
     femIntegration *rule;
-    femFullSystem *system;
+    femFullSystem *systemX;
+    femFullSystem *systemY;
 } femPoissonProblem;
 
 typedef struct {
