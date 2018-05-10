@@ -19,9 +19,8 @@
 #define ErrorScan(a)   femErrorScan(a,__LINE__,__FILE__)
 #define Error(a)       femError(a,__LINE__,__FILE__)
 #define Warning(a)     femWarning(a,  __LINE__, __FILE__)
-#define FALSE 0
+#define FALSE 0 
 #define TRUE  1
-
 
 typedef enum {FEM_TRIANGLE,FEM_QUAD} femElementType;
 
@@ -52,7 +51,7 @@ typedef struct {
     void (*phi2)(double xsi, double eta, double *phi);
     void (*dphi2dx)(double xsi, double eta, double *dphidxsi, double *dphideta);
 } femDiscrete;
-
+    
 typedef struct {
     int n;
     const double *xsi;
@@ -71,25 +70,9 @@ typedef struct {
     femEdges *edges;
     femDiscrete *space;
     femIntegration *rule;
-    femFullSystem *systemX;
-    femFullSystem *systemY;
+    femFullSystem *system;
 } femPoissonProblem;
 
-typedef struct {
-    int n;
-    double radiusIn;
-    double radiusOut;
-    double gravity[2];
-    double gamma;
-    double *x;
-    double *y;
-    double *vx;
-    double *vy;
-    double *r;
-    double *m;
-    double *dvBoundary;
-    double *dvContacts;
-} femGrains;
 
 femIntegration      *femIntegrationCreate(int n, femElementType type);
 void                 femIntegrationFree(femIntegration *theRule);
@@ -122,19 +105,16 @@ void                 femFullSystemConstrain(femFullSystem* mySystem, int myNode,
 
 femPoissonProblem   *femPoissonCreate(const char *filename);
 void                 femPoissonFree(femPoissonProblem *theProblem);
-void                 femPoissonSolve(femPoissonProblem *theProblem, double omega);
+void                 femPoissonSolve(femPoissonProblem *theProblem);
 
-femGrains  *femGrainsCreateSimple(int n, double r, double m, double radiusIn, double radiusOut);
-femGrains  *femGrainsCreateTiny(double radiusIn, double radiusOut);
-void        femGrainsFree(femGrains *myGrains);
-void        femGrainsUpdate(femPoissonProblem *theProblem, femGrains *myGrains, double dt, double tol, double iterMax);
-double      femGrainsContactIterate(femGrains *myGrains, double dt, int iter);
+double               femMin(double *x, int n);
+double               femMax(double *x, int n);
+void                 femError(char *text, int line, char *file);
+void                 femErrorScan(int test, int line, char *file);
+void                 femWarning(char *text, int line, char *file);
 
-double      femMin(double *x, int n);
-double      femMax(double *x, int n);
-void        femError(char *text, int line, char *file);
-void        femErrorScan(int test, int line, char *file);
-void        femWarning(char *text, int line, char *file);
+// Functions of homework 3 :-)
+
 
 
 #endif

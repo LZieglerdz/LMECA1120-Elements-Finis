@@ -12,8 +12,9 @@
 int main(void)
 {
 
-  int    n = 15;
-  double radius    = 0.1;
+  int    n = 500;
+  double omega = 4;   //En rad/s
+  double radius    = 0.025;
   double mass      = 0.1;
   double radiusIn  = 0.5;
   double radiusOut = 2.0;
@@ -32,7 +33,7 @@ int main(void)
   printf("Number of unknowns(x) : %4d\n", theProblem->systemX->size);
   printf("Number of unknowns(y) : %4d\n", theProblem->systemY->size);
 
-  femPoissonSolve(theProblem, theGrains);
+  femPoissonSolve(theProblem, omega);
 
   printf("Maximum value : %.4f\n", femMax(theProblem->systemX->B,theProblem->systemX->size));
   printf("Maximum value : %.4f\n", femMax(theProblem->systemY->B,theProblem->systemY->size));
@@ -57,7 +58,11 @@ int main(void)
 
         glfwGetFramebufferSize(window,&w,&h);
         glfemReshapeWindows(radiusOut,w,h);
-        glfemPlotField(theProblem->mesh,theProblem->systemX->B); //systemY
+        double u[theProblem->systemX->size];
+        for (i=0 ;i < theProblem->systemX->size; i++) {
+          u[i] = theProblem->systemX->B[i] + theProblem->systemY->B[i] ;
+        }
+        glfemPlotField(theProblem->mesh, u);
         for (i=0 ;i < theGrains->n; i++) {
             glColor3f(102/255,255/255,102/255);
             glfemDrawDisk(theGrains->x[i],theGrains->y[i],theGrains->r[i]); }
@@ -76,7 +81,7 @@ int main(void)
   //          printf("press CR to compute the next time step >>");
   //          char c= getchar();
   //
-            femGrainsUpdate(theGrains,dt,tol,iterMax);
+            femGrainsUpdate(theProblem, theGrains,dt,tol,iterMax);
             t += dt; }
 
         while ( glfwGetTime()-currentTime < theVelocityFactor ) {

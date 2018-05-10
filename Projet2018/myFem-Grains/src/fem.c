@@ -238,11 +238,11 @@ void femDiscretePrint(femDiscrete *mySpace)
             printf("(xsi=%+.1f,eta=%+.1f) : ",xsi[i],eta[i]);
             printf(" phi(%d)=%+.1f",j,phi[j]);
             printf("   dphidxsi(%d)=%+.1f",j,dphidxsi[j]);
-            printf("   dphideta(%d)=%+.1f \n",j,dphideta[j]);  }
-        printf(" \n"); }
+            printf("   dphideta(%d)=%+.1f \n",j,dphideta[j]);
+          }
+        printf(" \n");
+      }
 }
-
-
 
 femMesh *femMeshRead(const char *filename)
 {

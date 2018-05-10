@@ -19,8 +19,7 @@ femPoissonProblem *femPoissonCreate(const char *filename)
     else if (theProblem->mesh->nLocalNode == 3) {
         theProblem->space = femDiscreteCreate(3,FEM_TRIANGLE);
         theProblem->rule = femIntegrationCreate(3,FEM_TRIANGLE); }
-    theProblem->systemX = femFullSystemCreate(theProblem->mesh->nNode);
-    theProblem->systemY = femFullSystemCreate(theProblem->mesh->nNode);
+    theProblem->system = femFullSystemCreate(theProblem->mesh->nNode);
     return theProblem;
 }
 
@@ -29,8 +28,7 @@ femPoissonProblem *femPoissonCreate(const char *filename)
 
 void femPoissonFree(femPoissonProblem *theProblem)
 {
-    femFullSystemFree(theProblem->systemX);
-    femFullSystemFree(theProblem->systemY);
+    femFullSystemFree(theProblem->system);
     femIntegrationFree(theProblem->rule);
     femDiscreteFree(theProblem->space);
     femEdgesFree(theProblem->edges);
@@ -54,37 +52,11 @@ void femMeshLocal(const femMesh *theMesh, const int i, int *map, double *x, doub
 # endif
 # ifndef NOPOISSONSOLVE
 
-double radius(femPoissonProblem *theProblem){
-  int i;
-  femMesh *theMesh = theProblem->mesh;
-  double rad = 0;
-  for (i=0; i < theMesh->nNode; i++){
-    double x = theMesh->X[i];
-    double y = theMesh->Y[i];
-    printf("%d %f %f\n", i, x, y );
-    double dist = sqrt(pow(x,2)+pow(y,2));
-    if (dist > rad){
-      rad = dist;
-    }
-  }
-  return 0.9*rad;
-}
-
-
-
 
 void femPoissonSolve(femPoissonProblem *theProblem)
 {
-
-  double omega = 1;   //En rad/s
-
-  int elem, locNode, edge, i,j, map[4];
+	int elem, locNode, edge, i,j, map[4];
 	double x[4], y[4], phi[4], dphidx[4], dphidy[4], dphidxi[4], dphideta[4];
-
-  femMesh *theMesh = theProblem->mesh;
-
-  double critRad = radius(theProblem);
-  printf( "%f \n", critRad);
 
 
   for (elem = 0; elem < theProblem->mesh->nElem; elem++){
@@ -118,57 +90,21 @@ void femPoissonSolve(femPoissonProblem *theProblem)
 			for (i = 0; i < theProblem->space->n; i++) {							//remplissage de la matrice A par integration
 				for (j = 0; j < theProblem->space->n; j++) {
 					double f = (dphidx[i]*dphidx[j] + dphidy[i]*dphidy[j]) * jacobian;
-					theProblem->systemX->A[map[i]][map[j]] += weight * f;
-          theProblem->systemY->A[map[i]][map[j]] += weight * f;
+					theProblem->system->A[map[i]][map[j]] += weight * f;
 				}
-				theProblem->systemX->B[map[i]] += weight * phi[i] * jacobian;
-        theProblem->systemY->B[map[i]] += weight * phi[i] * jacobian;
+				theProblem->system->B[map[i]] += weight * phi[i] * jacobian;
 			}
 		}
 	}
 		for (edge = 0; edge < theProblem->edges->nEdge; edge++) {
-      double x = theMesh->X[theProblem->edges->edges[edge].node[0]];
-      double y = theMesh->Y[theProblem->edges->edges[edge].node[1]];
-      double dist = sqrt(pow(x,2)+pow(y,2));
-
-      if (theProblem->edges->edges[edge].elem[1] < 0 && dist < critRad ) {
+			if (theProblem->edges->edges[edge].elem[1] < 0) {
 				for (i = 0; i < 2; i++) {
 					int node = theProblem->edges->edges[edge].node[i];
-					femFullSystemConstrain(theProblem->systemX,node,0);
-          femFullSystemConstrain(theProblem->systemY,node,0);
-				}
-			}
-      if (theProblem->edges->edges[edge].elem[1] < 0 && dist > critRad && x > 0 && y > 0) {
-				for (i = 0; i < 2; i++) {
-					int node = theProblem->edges->edges[edge].node[i];
-					femFullSystemConstrain(theProblem->systemX,node,-omega);
-          femFullSystemConstrain(theProblem->systemY,node,omega);
-				}
-			}
-      if (theProblem->edges->edges[edge].elem[1] < 0 && dist > critRad && x < 0 && y > 0) {
-				for (i = 0; i < 2; i++) {
-					int node = theProblem->edges->edges[edge].node[i];
-					femFullSystemConstrain(theProblem->systemX,node,-omega);
-          femFullSystemConstrain(theProblem->systemY,node,-omega);
-				}
-			}
-      if (theProblem->edges->edges[edge].elem[1] < 0 && dist > critRad && x < 0 && y < 0) {
-				for (i = 0; i < 2; i++) {
-					int node = theProblem->edges->edges[edge].node[i];
-					femFullSystemConstrain(theProblem->systemX,node,omega);
-          femFullSystemConstrain(theProblem->systemY,node,-omega);
-				}
-			}
-      if (theProblem->edges->edges[edge].elem[1] < 0 && dist > critRad && x > 0 && y < 0) {
-				for (i = 0; i < 2; i++) {
-					int node = theProblem->edges->edges[edge].node[i];
-					femFullSystemConstrain(theProblem->systemX,node,omega);
-          femFullSystemConstrain(theProblem->systemY,node,omega);
+					femFullSystemConstrain(theProblem->system,node,0);
 				}
 			}
 		}
- 	femFullSystemEliminate(theProblem->systemX);
-  femFullSystemEliminate(theProblem->systemY);
+ 	femFullSystemEliminate(theProblem->system);
 
 }
 
