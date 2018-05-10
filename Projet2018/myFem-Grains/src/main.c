@@ -11,20 +11,6 @@
 
 int main(void)
 {
-  femPoissonProblem* theProblem = femPoissonCreate("../data/meshMedium.txt");
-
-  printf("Number of elements    : %4d\n", theProblem->mesh->nElem);
-  printf("Number of local nodes : %4d\n", theProblem->mesh->nLocalNode);
-  printf("Number of segments    : %4d\n", theProblem->edges->nBoundary);
-  printf("Number of unknowns    : %4d\n", theProblem->system->size);
-
-  femPoissonSolve(theProblem);
-
-  printf("Maximum value : %.4f\n", femMax(theProblem->system->B,theProblem->system->size));
-  fflush(stdout);
-
-  char theMessage[256];
-  sprintf(theMessage, "Max : %.4f", femMax(theProblem->system->B,theProblem->system->size));
 
   int    n = 15;
   double radius    = 0.1;
@@ -37,6 +23,25 @@ int main(void)
   double t       = 0;
   double iterMax = 100;
   femGrains* theGrains = femGrainsCreateSimple(n,radius,mass,radiusIn,radiusOut);
+
+  femPoissonProblem* theProblem = femPoissonCreate("../data/meshMedium.txt");
+
+  printf("Number of elements    : %4d\n", theProblem->mesh->nElem);
+  printf("Number of local nodes : %4d\n", theProblem->mesh->nLocalNode);
+  printf("Number of segments    : %4d\n", theProblem->edges->nBoundary);
+  printf("Number of unknowns(x) : %4d\n", theProblem->systemX->size);
+  printf("Number of unknowns(y) : %4d\n", theProblem->systemY->size);
+
+  femPoissonSolve(theProblem, theGrains);
+
+  printf("Maximum value : %.4f\n", femMax(theProblem->systemX->B,theProblem->systemX->size));
+  printf("Maximum value : %.4f\n", femMax(theProblem->systemY->B,theProblem->systemY->size));
+  fflush(stdout);
+
+  char theMessage[256];
+  sprintf(theMessage, "Max : %.4f", femMax(theProblem->systemX->B,theProblem->systemX->size));
+  sprintf(theMessage, "Max : %.4f", femMax(theProblem->systemY->B,theProblem->systemY->size));
+
 
   //  A decommenter pour obtenir l'exemple de la seance d'exercice :-)
   //  femGrains* theGrains = femGrainsCreateTiny(radiusIn,radiusOut);;
@@ -52,7 +57,7 @@ int main(void)
 
         glfwGetFramebufferSize(window,&w,&h);
         glfemReshapeWindows(radiusOut,w,h);
-        glfemPlotField(theProblem->mesh,theProblem->system->B);
+        glfemPlotField(theProblem->mesh,theProblem->systemX->B); //systemY
         for (i=0 ;i < theGrains->n; i++) {
             glColor3f(102/255,255/255,102/255);
             glfemDrawDisk(theGrains->x[i],theGrains->y[i],theGrains->r[i]); }

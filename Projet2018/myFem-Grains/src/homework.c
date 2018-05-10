@@ -123,7 +123,7 @@ double tau(femGrains *myGrains, femMesh *theMesh, int iElem, double U, double *p
 
 void femPoissonSolve(femPoissonProblem *theProblem, femGrains *myGrains)
 {
-	int elem, locNode, edge, i,j, map[4];
+	int elem, locNode, edge, i,j, k, map[4];
 	double x[4], y[4], phi[4], dphidx[4], dphidy[4], dphidxi[4], dphideta[4], mu, gamma;
   double *vx = myGrains->vx;
   double *vy = myGrains->vy;
@@ -164,14 +164,15 @@ void femPoissonSolve(femPoissonProblem *theProblem, femGrains *myGrains)
 				for (j = 0; j < theProblem->space->n; j++) {
 					theProblem->systemX->A[map[i]][map[j]] += weight * jacobian * mu * (dphidx[i]*dphidx[j] + dphidy[i]*dphidy[j]);
           theProblem->systemY->A[map[i]][map[j]] += weight * jacobian * mu * (dphidx[i]*dphidx[j] + dphidy[i]*dphidy[j]);
+
           for (k = 0; k < myGrains->n; i++){
-            theProblem->systemX->A[map[i]][map[j]] += gamma * tau(myGrains, theMesh, k, xLocal, phi) * tau(myGrains, theMesh, k, xLocal, phi);
-            theProblem->systemY->A[map[i]][map[j]] += gamma * tau(myGrains, theMesh, k, xLocal, phi) * tau(myGrains, theMesh, k, xLocal, phi);
+            theProblem->systemX->A[map[i]][map[j]] += gamma * tau(myGrains, theProblem->mesh, k, xLocal, phi) * tau(myGrains, theProblem->mesh, k, xLocal, phi);
+            theProblem->systemY->A[map[i]][map[j]] += gamma * tau(myGrains, theProblem->mesh, k, xLocal, phi) * tau(myGrains, theProblem->mesh, k, xLocal, phi);
           }
         }
         for (k = 0; k< myGrains->n; i++){
-          theProblem->systemX->B[map[i]] += gamma * tau(myGrains, theMesh, k, xLocal, phi) * vx[k];
-          theProblem->systemY->B[map[i]] += gamma * tau(myGrains, theMesh, k, xLocal, phi) * vy[k];
+          theProblem->systemX->B[map[i]] += gamma * tau(myGrains, theProblem->mesh, k, xLocal, phi) * vx[k];
+          theProblem->systemY->B[map[i]] += gamma * tau(myGrains, theProblem->mesh, k, xLocal, phi) * vy[k];
        }
       }
 		}
