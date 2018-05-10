@@ -77,6 +77,8 @@ fem.h
 /home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/homework.c
 fem.h
 /home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.h
+stdbool.h
+-
 
 /home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/main.c
 glfem.h

@@ -1,4 +1,5 @@
 #include "fem.h"
+#include <stdbool.h>
 
 # ifndef NOPOISSONCREATE
 
@@ -14,7 +15,8 @@ femPoissonProblem *femPoissonCreate(const char *filename)
     else if (theProblem->mesh->nLocalNode == 3) {
         theProblem->space = femDiscreteCreate(3,FEM_TRIANGLE);
         theProblem->rule = femIntegrationCreate(3,FEM_TRIANGLE); }
-    theProblem->system = femFullSystemCreate(theProblem->mesh->nNode);
+    theProblem->systemX = femFullSystemCreate(theProblem->mesh->nNode);
+    theProblem->systemY = femFullSystemCreate(theProblem->mesh->nNode);
     return theProblem;
 }
 
@@ -24,7 +26,8 @@ femPoissonProblem *femPoissonCreate(const char *filename)
 
 void femPoissonFree(femPoissonProblem *theProblem)
 {
-    femFullSystemFree(theProblem->system);
+    femFullSystemFree(theProblem->systemX);
+    femFullSystemFree(theProblem->systemY);
     femIntegrationFree(theProblem->rule);
     femDiscreteFree(theProblem->space);
     femEdgesFree(theProblem->edges);
@@ -56,7 +59,7 @@ double innerRadius(femPoissonProblem *theProblem){
   x = theProblem->mesh->X[0];
   y = theProblem->mesh->Y[0];
   iRad = sqrt(pow(x,2)+pow(y,2));
-  for(i = 1; i < theProblem->system->size; i++){
+  for(i = 1; i < theProblem->mesh->nNode; i++){
     x = theProblem->mesh->X[i];
     y = theProblem->mesh->Y[i];
     dist = sqrt(pow(x,2)+pow(y,2));
@@ -72,7 +75,7 @@ double outerRadius(femPoissonProblem *theProblem){
   x = theProblem->mesh->X[0];
   y = theProblem->mesh->Y[0];
   iRad = sqrt(pow(x,2)+pow(y,2));
-  for(i = 1; i < theProblem->system->size; i++){
+  for(i = 1; i < theProblem->mesh->nNode; i++){
     x = theProblem->mesh->X[i];
     y = theProblem->mesh->Y[i];
     dist = sqrt(pow(x,2)+pow(y,2));
@@ -83,6 +86,7 @@ double outerRadius(femPoissonProblem *theProblem){
 }
 
 bool whereIsBrian(femMesh *theMesh, double xGrain, double yGrain){
+  int i;
   for(i = 0; i < theMesh->nElem; i++){
     double x0 = theMesh->X[theMesh->elem[i*theMesh->nLocalNode]];
     double x1 = theMesh->X[theMesh->elem[i*theMesh->nLocalNode+1]];
@@ -95,13 +99,13 @@ bool whereIsBrian(femMesh *theMesh, double xGrain, double yGrain){
 
     if((x2-x0)*(yGrain-y0)-(y2-y0)*(xGrain-x0) > 0 == s_ab)
       return false;
-    if((x2-x1)*(yGrain-y1)-(y3-y2)*(xGrain-x1) > 0 != s_ab)
+    if((x2-x1)*(yGrain-y1)-(y2-y1)*(xGrain-x1) > 0 != s_ab)
       return false;
     return true;
   }
 }
 
-double tau(femGrains *myGrains, femMesh *theMesh, int iElem, int j, double *phi){
+double tau(femGrains *myGrains, femMesh *theMesh, int iElem, double U, double *phi){
   int i;
   double xGrain = myGrains->x[iElem];
   double yGrain = myGrains->y[iElem];
@@ -113,7 +117,7 @@ double tau(femGrains *myGrains, femMesh *theMesh, int iElem, int j, double *phi)
     }
   }
   for (i = 0; i < theMesh->nLocalNode; i++){
-    tau += phi[i] * Ui[i];
+    tau += phi[i] * U;
   }
 }
 
@@ -160,14 +164,14 @@ void femPoissonSolve(femPoissonProblem *theProblem, femGrains *myGrains)
 				for (j = 0; j < theProblem->space->n; j++) {
 					theProblem->systemX->A[map[i]][map[j]] += weight * jacobian * mu * (dphidx[i]*dphidx[j] + dphidy[i]*dphidy[j]);
           theProblem->systemY->A[map[i]][map[j]] += weight * jacobian * mu * (dphidx[i]*dphidx[j] + dphidy[i]*dphidy[j]);
-          for (k = 0; k< myGrains->n; i++){
-            theProblem->systemX->A[map[i]][map[j]] += gamma * tau() * tau();
-            theProblem->systemY->A[map[i]][map[j]] += gamma * tau() * tau();
+          for (k = 0; k < myGrains->n; i++){
+            theProblem->systemX->A[map[i]][map[j]] += gamma * tau(myGrains, theMesh, k, xLocal, phi) * tau(myGrains, theMesh, k, xLocal, phi);
+            theProblem->systemY->A[map[i]][map[j]] += gamma * tau(myGrains, theMesh, k, xLocal, phi) * tau(myGrains, theMesh, k, xLocal, phi);
           }
         }
         for (k = 0; k< myGrains->n; i++){
-          theProblem->systemX->B[map[i]] += gamma * tau() * vx[k];
-          theProblem->systemY->B[map[i]] += gamma * tau() * vy[k];
+          theProblem->systemX->B[map[i]] += gamma * tau(myGrains, theMesh, k, xLocal, phi) * vx[k];
+          theProblem->systemY->B[map[i]] += gamma * tau(myGrains, theMesh, k, xLocal, phi) * vy[k];
        }
       }
 		}
