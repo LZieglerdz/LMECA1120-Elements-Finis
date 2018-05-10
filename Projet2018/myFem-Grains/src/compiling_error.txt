@@ -1,0 +1,229 @@
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c: In function ‘femPoissonSolve’:
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:14:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ {
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:52:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ {
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:91:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ {
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:103:21: error: storage class specified for parameter ‘_gaussQuad4Xsi’
+ static const double _gaussQuad4Xsi[4]    = {-0.577350269189626,-0.577350269189626, 0.577350269189626, 0.577350269189626};
+                     ^~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:103:1: error: parameter ‘_gaussQuad4Xsi’ is initialized
+ static const double _gaussQuad4Xsi[4]    = {-0.577350269189626,-0.577350269189626, 0.577350269189626, 0.577350269189626};
+ ^~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:103:45: error: incompatible types when initializing type ‘const double *’ using type ‘double’
+ static const double _gaussQuad4Xsi[4]    = {-0.577350269189626,-0.577350269189626, 0.577350269189626, 0.577350269189626};
+                                             ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:103:64: warning: excess elements in scalar initializer
+ static const double _gaussQuad4Xsi[4]    = {-0.577350269189626,-0.577350269189626, 0.577350269189626, 0.577350269189626};
+                                                                ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:103:64: note: (near initialization for ‘_gaussQuad4Xsi’)
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:103:84: warning: excess elements in scalar initializer
+ static const double _gaussQuad4Xsi[4]    = {-0.577350269189626,-0.577350269189626, 0.577350269189626, 0.577350269189626};
+                                                                                    ^~~~~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:103:84: note: (near initialization for ‘_gaussQuad4Xsi’)
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:103:103: warning: excess elements in scalar initializer
+ static const double _gaussQuad4Xsi[4]    = {-0.577350269189626,-0.577350269189626, 0.577350269189626, 0.577350269189626};
+                                                                                                       ^~~~~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:103:103: note: (near initialization for ‘_gaussQuad4Xsi’)
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:104:21: error: storage class specified for parameter ‘_gaussQuad4Eta’
+ static const double _gaussQuad4Eta[4]    = { 0.577350269189626,-0.577350269189626,-0.577350269189626, 0.577350269189626};
+                     ^~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:104:1: error: parameter ‘_gaussQuad4Eta’ is initialized
+ static const double _gaussQuad4Eta[4]    = { 0.577350269189626,-0.577350269189626,-0.577350269189626, 0.577350269189626};
+ ^~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:104:46: error: incompatible types when initializing type ‘const double *’ using type ‘double’
+ static const double _gaussQuad4Eta[4]    = { 0.577350269189626,-0.577350269189626,-0.577350269189626, 0.577350269189626};
+                                              ^~~~~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:104:64: warning: excess elements in scalar initializer
+ static const double _gaussQuad4Eta[4]    = { 0.577350269189626,-0.577350269189626,-0.577350269189626, 0.577350269189626};
+                                                                ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:104:64: note: (near initialization for ‘_gaussQuad4Eta’)
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:104:83: warning: excess elements in scalar initializer
+ static const double _gaussQuad4Eta[4]    = { 0.577350269189626,-0.577350269189626,-0.577350269189626, 0.577350269189626};
+                                                                                   ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:104:83: note: (near initialization for ‘_gaussQuad4Eta’)
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:104:103: warning: excess elements in scalar initializer
+ static const double _gaussQuad4Eta[4]    = { 0.577350269189626,-0.577350269189626,-0.577350269189626, 0.577350269189626};
+                                                                                                       ^~~~~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:104:103: note: (near initialization for ‘_gaussQuad4Eta’)
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:105:21: error: storage class specified for parameter ‘_gaussQuad4Weight’
+ static const double _gaussQuad4Weight[4] = { 1.000000000000000, 1.000000000000000, 1.000000000000000, 1.000000000000000};
+                     ^~~~~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:105:1: error: parameter ‘_gaussQuad4Weight’ is initialized
+ static const double _gaussQuad4Weight[4] = { 1.000000000000000, 1.000000000000000, 1.000000000000000, 1.000000000000000};
+ ^~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:105:46: error: incompatible types when initializing type ‘const double *’ using type ‘double’
+ static const double _gaussQuad4Weight[4] = { 1.000000000000000, 1.000000000000000, 1.000000000000000, 1.000000000000000};
+                                              ^~~~~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:105:65: warning: excess elements in scalar initializer
+ static const double _gaussQuad4Weight[4] = { 1.000000000000000, 1.000000000000000, 1.000000000000000, 1.000000000000000};
+                                                                 ^~~~~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:105:65: note: (near initialization for ‘_gaussQuad4Weight’)
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:105:84: warning: excess elements in scalar initializer
+ static const double _gaussQuad4Weight[4] = { 1.000000000000000, 1.000000000000000, 1.000000000000000, 1.000000000000000};
+                                                                                    ^~~~~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:105:84: note: (near initialization for ‘_gaussQuad4Weight’)
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:105:103: warning: excess elements in scalar initializer
+ static const double _gaussQuad4Weight[4] = { 1.000000000000000, 1.000000000000000, 1.000000000000000, 1.000000000000000};
+                                                                                                       ^~~~~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:105:103: note: (near initialization for ‘_gaussQuad4Weight’)
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:106:21: error: storage class specified for parameter ‘_gaussTri3Xsi’
+ static const double _gaussTri3Xsi[3]     = { 0.166666666666667, 0.666666666666667, 0.166666666666667};
+                     ^~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:106:1: error: parameter ‘_gaussTri3Xsi’ is initialized
+ static const double _gaussTri3Xsi[3]     = { 0.166666666666667, 0.666666666666667, 0.166666666666667};
+ ^~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:106:46: error: incompatible types when initializing type ‘const double *’ using type ‘double’
+ static const double _gaussTri3Xsi[3]     = { 0.166666666666667, 0.666666666666667, 0.166666666666667};
+                                              ^~~~~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:106:65: warning: excess elements in scalar initializer
+ static const double _gaussTri3Xsi[3]     = { 0.166666666666667, 0.666666666666667, 0.166666666666667};
+                                                                 ^~~~~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:106:65: note: (near initialization for ‘_gaussTri3Xsi’)
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:106:84: warning: excess elements in scalar initializer
+ static const double _gaussTri3Xsi[3]     = { 0.166666666666667, 0.666666666666667, 0.166666666666667};
+                                                                                    ^~~~~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:106:84: note: (near initialization for ‘_gaussTri3Xsi’)
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:107:21: error: storage class specified for parameter ‘_gaussTri3Eta’
+ static const double _gaussTri3Eta[3]     = { 0.166666666666667, 0.166666666666667, 0.666666666666667};
+                     ^~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:107:1: error: parameter ‘_gaussTri3Eta’ is initialized
+ static const double _gaussTri3Eta[3]     = { 0.166666666666667, 0.166666666666667, 0.666666666666667};
+ ^~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:107:46: error: incompatible types when initializing type ‘const double *’ using type ‘double’
+ static const double _gaussTri3Eta[3]     = { 0.166666666666667, 0.166666666666667, 0.666666666666667};
+                                              ^~~~~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:107:65: warning: excess elements in scalar initializer
+ static const double _gaussTri3Eta[3]     = { 0.166666666666667, 0.166666666666667, 0.666666666666667};
+                                                                 ^~~~~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:107:65: note: (near initialization for ‘_gaussTri3Eta’)
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:107:84: warning: excess elements in scalar initializer
+ static const double _gaussTri3Eta[3]     = { 0.166666666666667, 0.166666666666667, 0.666666666666667};
+                                                                                    ^~~~~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:107:84: note: (near initialization for ‘_gaussTri3Eta’)
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:108:21: error: storage class specified for parameter ‘_gaussTri3Weight’
+ static const double _gaussTri3Weight[3]  = { 0.166666666666667, 0.166666666666667, 0.166666666666667};
+                     ^~~~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:108:1: error: parameter ‘_gaussTri3Weight’ is initialized
+ static const double _gaussTri3Weight[3]  = { 0.166666666666667, 0.166666666666667, 0.166666666666667};
+ ^~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:108:46: error: incompatible types when initializing type ‘const double *’ using type ‘double’
+ static const double _gaussTri3Weight[3]  = { 0.166666666666667, 0.166666666666667, 0.166666666666667};
+                                              ^~~~~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:108:65: warning: excess elements in scalar initializer
+ static const double _gaussTri3Weight[3]  = { 0.166666666666667, 0.166666666666667, 0.166666666666667};
+                                                                 ^~~~~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:108:65: note: (near initialization for ‘_gaussTri3Weight’)
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:108:84: warning: excess elements in scalar initializer
+ static const double _gaussTri3Weight[3]  = { 0.166666666666667, 0.166666666666667, 0.166666666666667};
+                                                                                    ^~~~~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:108:84: note: (near initialization for ‘_gaussTri3Weight’)
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:112:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ {
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:129:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ {
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:134:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ {
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:142:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ {
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:150:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ {
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:163:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ {
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:170:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ {
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:177:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ {
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:189:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ {
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:206:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ {
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:211:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ {
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:216:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ {
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:221:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ {
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:226:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ {
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:248:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ {
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:285:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ {
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:293:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ {
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:325:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+     int i,*elem;
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:353:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+     theEdges->mesh  = theMesh;
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:393:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+                theEdges->edges[i].elem[0],theEdges->edges[i].elem[1]); }
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:402:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ int femEdgesCompare(const void *edgeOne, const void *edgeTwo)
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:408:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ 
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:422:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+     return theSystem;
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:431:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ 
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:438:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+     mySystem->A[0] = elem + size;
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:450:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ 
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:457:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+     B    = mySystem->B;
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:473:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+     B    = mySystem->B;
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:507:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+     B    = mySystem->B;
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:527:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+     return myMin;
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:536:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+     return myMax;
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:545:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ }
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:553:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+     printf("--------------------------------------------------------------------- Yek Yek !! \n\n");
+ ^
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:563:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+In file included from /home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:11:0:
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.h:125:22: error: old-style parameter declarations in prototyped function definition
+ void                 femPoissonSolve(femPoissonProblem *theProblem, femGrains *myGrains)
+                      ^~~~~~~~~~~~~~~
+/home/admin/Documents/EPL/LMECA1120 - Elements Finis/Devoirs/Projet2018/myFem-Grains/src/fem.c:567:1: error: expected ‘{’ at end of input

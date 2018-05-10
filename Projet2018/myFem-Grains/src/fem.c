@@ -293,7 +293,6 @@ void femMeshClean(femMesh *theMesh)
 {
     int i,j,*elem;
 
-
     int *check = malloc(sizeof(int)*theMesh->nNode);
     for (i = 0; i < theMesh->nNode; ++i)
       	check[i] = 0;
@@ -326,10 +325,6 @@ void femMeshWrite(const femMesh *theMesh, const char *filename)
     int i,*elem;
 
     FILE* file = fopen(filename,"w");
-
-
-
-
 
     fprintf(file, "Number of nodes %d \n", theMesh->nNode);
     for (i = 0; i < theMesh->nNode; ++i) {

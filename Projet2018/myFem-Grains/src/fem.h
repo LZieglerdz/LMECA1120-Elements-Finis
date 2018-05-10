@@ -122,7 +122,7 @@ void                 femFullSystemConstrain(femFullSystem* mySystem, int myNode,
 
 femPoissonProblem   *femPoissonCreate(const char *filename);
 void                 femPoissonFree(femPoissonProblem *theProblem);
-void                 femPoissonSolve(femPoissonProblem *theProblem, femGrains *myGrains)
+void                 femPoissonSolve(femPoissonProblem *theProblem, femGrains *myGrains);
 
 femGrains  *femGrainsCreateSimple(int n, double r, double m, double radiusIn, double radiusOut);
 femGrains  *femGrainsCreateTiny(double radiusIn, double radiusOut);
