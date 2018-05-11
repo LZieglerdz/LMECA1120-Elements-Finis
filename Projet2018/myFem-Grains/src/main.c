@@ -13,7 +13,8 @@ int main(void)
 {
 
   int    n = 500;
-  double omega = 4;   //En rad/s
+  double omega = 3;   //En rad/s
+  double mu = 1;
   double radius    = 0.025;
   double mass      = 0.1;
   double radiusIn  = 0.5;
@@ -33,7 +34,7 @@ int main(void)
   printf("Number of unknowns(x) : %4d\n", theProblem->systemX->size);
   printf("Number of unknowns(y) : %4d\n", theProblem->systemY->size);
 
-  femPoissonSolve(theProblem, omega);
+  femPoissonSolve(theProblem, omega, mu);
 
   printf("Maximum value : %.4f\n", femMax(theProblem->systemX->B,theProblem->systemX->size));
   printf("Maximum value : %.4f\n", femMax(theProblem->systemY->B,theProblem->systemY->size));
@@ -60,9 +61,10 @@ int main(void)
         glfemReshapeWindows(radiusOut,w,h);
         double u[theProblem->systemX->size];
         for (i=0 ;i < theProblem->systemX->size; i++) {
-          u[i] = theProblem->systemX->B[i] + theProblem->systemY->B[i] ;
+          u[i] = sqrt(pow(theProblem->systemX->B[i], 2) + pow(theProblem->systemY->B[i],2));
         }
-        glfemPlotField(theProblem->mesh, u);
+        glfemPlotField(theProblem->mesh, u );
+
         for (i=0 ;i < theGrains->n; i++) {
             glColor3f(102/255,255/255,102/255);
             glfemDrawDisk(theGrains->x[i],theGrains->y[i],theGrains->r[i]); }

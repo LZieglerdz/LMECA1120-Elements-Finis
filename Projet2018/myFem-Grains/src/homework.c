@@ -10,6 +10,33 @@
 
 #include"fem.h"
 
+
+bool checkTriangle(femMesh *theMesh, int elem, double xGrain, double yGrain){
+ double x0 = theMesh->X[theMesh->elem[elem*theMesh->nLocalNode]];
+ double x1 = theMesh->X[theMesh->elem[elem*theMesh->nLocalNode+1]];
+ double x2 = theMesh->X[theMesh->elem[elem*theMesh->nLocalNode+2]];
+ double y0 = theMesh->Y[theMesh->elem[elem*theMesh->nLocalNode]];
+ double y1 = theMesh->Y[theMesh->elem[elem*theMesh->nLocalNode+1]];
+ double y2 = theMesh->Y[theMesh->elem[elem*theMesh->nLocalNode+2]];
+
+ bool s_ab = (x1-x0)*(yGrain-y0)-(y1-y0)*(xGrain-x0) > 0;
+
+ if((x2-x0)*(yGrain-y0)-(y2-y0)*(xGrain-x0) > 0 == s_ab)
+   return false;
+ if((x2-x1)*(yGrain-y1)-(y2-y1)*(xGrain-x1) > 0 != s_ab)
+   return false;
+ return true;
+}
+
+int whereIsBrian(femMesh *theMesh, double xGrain, double yGrain){
+  int i;
+  for (i = 0; i < theMesh->nElem; i++){
+    if(checkTriangle(theMesh, i, xGrain, yGrain)){
+      return i;
+    }
+  }
+}
+
 # ifndef NOPOISSONCREATE
 
 femPoissonProblem *femPoissonCreate(const char *filename)
@@ -70,20 +97,33 @@ double radius(femPoissonProblem *theProblem){
       rad = dist;
     }
   }
-  return 0.9*rad;
+  return rad;
 }
 
-void femPoissonSolve(femPoissonProblem *theProblem, double omega)
+void femPoissonSolve(femPoissonProblem *theProblem, double omega, double mu)
 {
   int elem, locNode, edge, i,j, map[4];
 	double x[4], y[4], phi[4], dphidx[4], dphidy[4], dphidxi[4], dphideta[4];
 
   femMesh *theMesh = theProblem->mesh;
 
-  double critRad = radius(theProblem);
+  double outerRad = radius(theProblem);
+  double critRad = .9*outerRad;
   printf( "%f \n", critRad);
 
 
+
+
+
+/*
+  int grainElement[theProblem->edges->nBoundary][theProblem->edges->nBoundary];
+  for (i = 0; i < myGrains->n; i++){
+    int elem = whereIsBrian(theProblem->mesh, myGrains->x[i], myGrains->y[i]);
+    grainElement[theMesh->X[theMesh->elem[elem*theMesh->nLocalNode+0]]][theMesh->Y[theMesh->elem[elem*theMesh->nLocalNode]]] = 1;
+    grainElement[theMesh->X[theMesh->elem[elem*theMesh->nLocalNode+1]][theMesh->Y[theMesh->elem[elem*theMesh->nLocalNode]]] = 1;
+    grainElement[theMesh->X[theMesh->elem[elem*theMesh->nLocalNode+2]][theMesh->Y[theMesh->elem[elem*theMesh->nLocalNode]]] = 1;
+  }
+*/
   for (elem = 0; elem < theProblem->mesh->nElem; elem++){
 		femMeshLocal(theProblem->mesh, elem, map, x, y);
 		for (locNode = 0; locNode < theProblem->rule->n; locNode++) {
@@ -112,12 +152,19 @@ void femPoissonSolve(femPoissonProblem *theProblem, double omega)
 				dphidx[i] = (1/jacobian) * (dphidxi[i]*dydeta - dphideta[i]*dydxi);
 				dphidy[i] = (1/jacobian) * (dphidxi[i]*dxdeta - dphideta[i]*dxdxi);
 			}
+
 			for (i = 0; i < theProblem->space->n; i++) {							//remplissage de la matrice A par integration
 				for (j = 0; j < theProblem->space->n; j++) {
 					double f = (dphidx[i]*dphidx[j] + dphidy[i]*dphidy[j]) * jacobian;
-					theProblem->systemX->A[map[i]][map[j]] += weight * f;
-          theProblem->systemY->A[map[i]][map[j]] += weight * f;
-				}
+					theProblem->systemX->A[map[i]][map[j]] += weight * f * mu;
+          theProblem->systemY->A[map[i]][map[j]] += weight * f * mu;
+/*
+            if (grainElement[i][j] == 1){
+              theProblem->systemX->A[map[i]][map[j]] += gamma * (X1i*(1-xi-eta) + X2i*xi + X3i*eta) * (X1j*(1-xi-eta) + X2j*xi + X3j*eta);
+              theProblem->systemY->A[map[i]][map[j]] += gamma * (Y1i*(1-xi-eta) + Y2i*xi + Y3i*eta) * (Y1j*(1-xi-eta) + Y2j*xi + Y3j*eta);
+
+          }
+	*/			}
 				theProblem->systemX->B[map[i]] += weight * phi[i] * jacobian;
         theProblem->systemY->B[map[i]] += weight * phi[i] * jacobian;
 			}
@@ -142,28 +189,28 @@ void femPoissonSolve(femPoissonProblem *theProblem, double omega)
            femFullSystemConstrain(theProblem->systemY,node,omega);
 			 	}
 			 }
-  */     if (theProblem->edges->edges[edge].elem[1] < 0 && dist > critRad && x > 0 && y > 0) {
+  */     if (theProblem->edges->edges[edge].elem[1] < 0 && dist > critRad && x >= 0 && y >= 0) {
 			 	for (i = 0; i < 2; i++) {
 			 		int node = theProblem->edges->edges[edge].node[i];
 			 		femFullSystemConstrain(theProblem->systemX,node,-omega);
            femFullSystemConstrain(theProblem->systemY,node,omega);
 			 	}
 			 }
-       if (theProblem->edges->edges[edge].elem[1] < 0 && dist > critRad && x < 0 && y > 0) {
+       if (theProblem->edges->edges[edge].elem[1] < 0 && dist > critRad && x <= 0 && y >= 0) {
 			 	for (i = 0; i < 2; i++) {
 			 		int node = theProblem->edges->edges[edge].node[i];
 			 		femFullSystemConstrain(theProblem->systemX,node,-omega);
            femFullSystemConstrain(theProblem->systemY,node,-omega);
 			 	}
 			 }
-       if (theProblem->edges->edges[edge].elem[1] < 0 && dist > critRad && x < 0 && y < 0) {
+       if (theProblem->edges->edges[edge].elem[1] < 0 && dist > critRad && x <= 0 && y <= 0) {
 			 	for (i = 0; i < 2; i++) {
 			 		int node = theProblem->edges->edges[edge].node[i];
 			 		femFullSystemConstrain(theProblem->systemX,node,omega);
            femFullSystemConstrain(theProblem->systemY,node,-omega);
 			 	}
 			 }
-       if (theProblem->edges->edges[edge].elem[1] < 0 && dist > critRad && x > 0 && y < 0) {
+       if (theProblem->edges->edges[edge].elem[1] < 0 && dist > critRad && x >= 0 && y <= 0) {
 			 	for (i = 0; i < 2; i++) {
 			 		int node = theProblem->edges->edges[edge].node[i];
 			 		femFullSystemConstrain(theProblem->systemX,node,omega);
@@ -248,31 +295,6 @@ double femGrainsContactIterate(femGrains *myGrains, double dt, int iter)
 # endif
 # ifndef NOUPDATE
 
-bool checkTriangle(femMesh *theMesh, int elem, double xGrain, double yGrain){
- double x0 = theMesh->X[theMesh->elem[elem*theMesh->nLocalNode]];
- double x1 = theMesh->X[theMesh->elem[elem*theMesh->nLocalNode+1]];
- double x2 = theMesh->X[theMesh->elem[elem*theMesh->nLocalNode+2]];
- double y0 = theMesh->Y[theMesh->elem[elem*theMesh->nLocalNode]];
- double y1 = theMesh->Y[theMesh->elem[elem*theMesh->nLocalNode+1]];
- double y2 = theMesh->Y[theMesh->elem[elem*theMesh->nLocalNode+2]];
-
- bool s_ab = (x1-x0)*(yGrain-y0)-(y1-y0)*(xGrain-x0) > 0;
-
- if((x2-x0)*(yGrain-y0)-(y2-y0)*(xGrain-x0) > 0 == s_ab)
-   return false;
- if((x2-x1)*(yGrain-y1)-(y2-y1)*(xGrain-x1) > 0 != s_ab)
-   return false;
- return true;
-}
-
-double whereIsBrian(femMesh *theMesh, double xGrain, double yGrain){
-  int i;
-  for (i = 0; i < theMesh->nElem; i++){
-    if(checkTriangle(theMesh, i, xGrain, yGrain)){
-      return i;
-    }
-  }
-}
 
 void femGrainsUpdate(femPoissonProblem *theProblem, femGrains *myGrains, double dt, double tol, double iterMax)
 {
@@ -294,10 +316,9 @@ void femGrainsUpdate(femPoissonProblem *theProblem, femGrains *myGrains, double 
     femFullSystem *theSystemY = theProblem->systemY;
 
 
-    int grainTriangle[n][2];
+    int grainTriangle[n];
     for (i = 0; i < n; i++){
-      grainTriangle[i][0] = i;
-      grainTriangle[i][1] = whereIsBrian(theProblem->mesh, myGrains->x[i], myGrains->y[i]);
+      grainTriangle[i] = whereIsBrian(theProblem->mesh, myGrains->x[i], myGrains->y[i]);
     }
 
 //
@@ -305,7 +326,7 @@ void femGrainsUpdate(femPoissonProblem *theProblem, femGrains *myGrains, double 
 //
 
     for(i = 0; i < n; i++) {
-      int elem = grainTriangle[i][1];
+      int elem = grainTriangle[i];
       int locNode = theProblem->mesh->nLocalNode;
       int x0 = theProblem->mesh->elem[elem*locNode];
       int x1 = theProblem->mesh->elem[elem*locNode+1];
