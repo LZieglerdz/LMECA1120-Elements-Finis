@@ -12,10 +12,10 @@
 int main(void)
 {
 
-  int    n = 500;
-  double omega = 3;   //En rad/s
+  int    n = 250;
+  double omega = M_PI;   //En rad/s
   double mu = 1;
-  double radius    = 0.025;
+  double radius    = 0.03;
   double mass      = 0.1;
   double radiusIn  = 0.5;
   double radiusOut = 2.0;
@@ -48,7 +48,7 @@ int main(void)
   //  A decommenter pour obtenir l'exemple de la seance d'exercice :-)
   //  femGrains* theGrains = femGrainsCreateTiny(radiusIn,radiusOut);;
 
-    GLFWwindow* window = glfemInit("MECA1120 : Homework 4");
+    GLFWwindow* window = glfemInit("MECA1120 : Projet 2018 - Un Poisson dans une machine à laver");
     glfwMakeContextCurrent(window);
     int theRunningMode = 1.0;
     float theVelocityFactor = 0.25;
