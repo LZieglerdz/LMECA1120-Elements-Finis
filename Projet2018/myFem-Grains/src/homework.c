@@ -8,7 +8,6 @@
  * Lacroix Arthur
  */
 
-#include"fem.h"
 
 
 bool checkTriangle(femMesh *theMesh, int elem, double xGrain, double yGrain){
@@ -99,41 +98,48 @@ double radius(femPoissonProblem *theProblem){
   }
   return rad;
 }
-/*
-double tauX(femMesh *theMesh, int k, int nLocalNode, xi, eta){
-  double x0 = theMesh->X[theMesh->elem[k*nLocalNode]];
-  double x1 = theMesh->X[theMesh->elem[k*nLocalNode+1]];
-  double x2 = theMesh->X[theMesh->elem[k*nLocalNode+2]];
-  double tau = x0*(1-eta-xi) + x1*xi + x2*eta;
+
+double tau(femPoissonProblem *theProblem, int i, int iElem){
+  femMesh *theMesh = theProblem->mesh;
+  int nLocalNode = theMesh->nLocalNode;
+  double phi[3];
+
+  double x    = theMesh->X[i];
+  double y    = theMesh->Y[i];
+  double x1   = theMesh->X[theMesh->elem[iElem*nLocalNode+0]];
+  double y1   = theMesh->Y[theMesh->elem[iElem*nLocalNode+0]];
+  double x2   = theMesh->X[theMesh->elem[iElem*nLocalNode+1]];
+  double y2   = theMesh->Y[theMesh->elem[iElem*nLocalNode+1]];
+  double x3   = theMesh->X[theMesh->elem[iElem*nLocalNode+2]];
+  double y3   = theMesh->Y[theMesh->elem[iElem*nLocalNode+2]];
+
+  double xi   = (x1*(y3-y)-x3*(y1-y)-x*(y3-y1))/(x1*(y3-y2)+x2*(y1-y3)+x3*(y2-y1));
+  double eta  = (x1*(y2-y)-x3*(y1-y)-x*(y2-y1))/(x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2));
+  femDiscretePhi2(theProblem->space, xi, eta, phi);
+  double tau = x1*phi[0] + x2*phi[1] + x3*phi[2];
   return tau;
 }
-double tauY(femMesh *theMesh, int k, int nLocalNode, xi, eta){
-  double y0 = theMesh->Y[theMesh->elem[k*nLocalNode]];
-  double y1 = theMesh->Y[theMesh->elem[k*nLocalNode+1]];
-  double y2 = theMesh->Y[theMesh->elem[k*nLocalNode+2]];
-  double tau = y0*(1-eta-xi) + y1*xi + y2*eta;
-  return tau;
-}
-*/
-void femPoissonSolve(femPoissonProblem *theProblem, double omega, double mu)
+
+
+void femPoissonSolve(femPoissonProblem *theProblem, double omega, double mu, femGrains *myGrains)
 {
   int elem, locNode, edge, i, j, k, map[4];
 	double x[4], y[4], phi[4], dphidx[4], dphidy[4], dphidxi[4], dphideta[4];
 
   femMesh *theMesh = theProblem->mesh;
   int nLocalNode = theProblem->mesh->nLocalNode;
+  int n = myGrains->n;
 
   double outerRad = radius(theProblem);
   double critRad = .9*outerRad;
-  printf( "%f \n", critRad);
-/*
+  double gamma       = myGrains->gamma;
+  double *vy         = myGrains->vy;
+  double *vx         = myGrains->vx;
+
   int grainTriangle[n];
   for (i = 0; i < n; i++){
     grainTriangle[i] = whereIsBrian(theProblem->mesh, myGrains->x[i], myGrains->y[i]);
   }
-*/
-
-
 
   for (elem = 0; elem < theProblem->mesh->nElem; elem++){
 		femMeshLocal(theProblem->mesh, elem, map, x, y);
@@ -169,16 +175,21 @@ void femPoissonSolve(femPoissonProblem *theProblem, double omega, double mu)
 					double f = (dphidx[i]*dphidx[j] + dphidy[i]*dphidy[j]) * jacobian;
 					theProblem->systemX->A[map[i]][map[j]] += weight * f * mu;
           theProblem->systemY->A[map[i]][map[j]] += weight * f * mu;
-      /*    for (k = 0; k < myGrains->n; k++){
-            if ( "condition" ){
-              theProblem->systemX->A[map[i]][map[j]] += gamma * tauX(theMesh, i, nLocalNode, xi, eta) * tauX(theMesh, j, nLocalNode, xi, eta);
-              theProblem->systemY->A[map[i]][map[j]] += gamma * tauY(theMesh, i, nLocalNode, xi, eta) * tauY(theMesh, j, nLocalNode, xi, eta);
+          for (k = 0; k < myGrains->n; k++){
+            int elem = grainTriangle[k];
+            if ( elem*3+0 == i || elem*3+1 == i || elem*3+2 == i  ){
+              if ( elem*3+0 == j || elem*3+1 == j || elem*3+2 == j){
+                theProblem->systemX->A[map[i]][map[j]] += gamma * tau(theProblem, i, elem ) * tau(theProblem, j, elem );
+                theProblem->systemY->A[map[i]][map[j]] += gamma * tau(theProblem, i, elem ) * tau(theProblem, j, elem );
+              }
             }
           }
-	*/			}
-				theProblem->systemX->B[map[i]] += weight * phi[i] * jacobian;
-        theProblem->systemY->B[map[i]] += weight * phi[i] * jacobian;
-			}
+				}
+        for (k = 0; k < myGrains->n; k++){
+				  theProblem->systemX->B[map[i]] += gamma * vx[k] * tau(theProblem, i, elem )/*tauX(theMesh, i, nLocalNode,theProblem->rule->xsi, theProblem->rule->eta)*/;
+          theProblem->systemY->B[map[i]] += gamma * vy[k] * tau(theProblem, i, elem )/*tauY(theMesh, i, nLocalNode,theProblem->rule->xsi, theProblem->rule->eta)*/;
+        }
+      }
 		}
 	}
 		for (edge = 0; edge < theProblem->edges->nEdge; edge++) {
@@ -193,14 +204,7 @@ void femPoissonSolve(femPoissonProblem *theProblem, double omega, double mu)
           femFullSystemConstrain(theProblem->systemY,node,0);
 				}
 			}
-  /*    if (theProblem->edges->edges[edge].elem[1] < 0 && dist > critRad) {
-			 	for (i = 0; i < 2; i++) {
-			 		int node = theProblem->edges->edges[edge].node[i];
-			 		femFullSystemConstrain(theProblem->systemX,node,omega);
-           femFullSystemConstrain(theProblem->systemY,node,omega);
-			 	}
-			 }
-  */     if (theProblem->edges->edges[edge].elem[1] < 0 && dist > critRad && x >= 0 && y >= 0) {
+      if (theProblem->edges->edges[edge].elem[1] < 0 && dist > critRad && x >= 0 && y >= 0) {
 			 	for (i = 0; i < 2; i++) {
 			 		int node = theProblem->edges->edges[edge].node[i];
 			 		femFullSystemConstrain(theProblem->systemX,node,-fabs(y/outerRad)*omega);

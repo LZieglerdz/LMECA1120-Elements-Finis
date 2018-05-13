@@ -34,7 +34,7 @@ int main(void)
   printf("Number of unknowns(x) : %4d\n", theProblem->systemX->size);
   printf("Number of unknowns(y) : %4d\n", theProblem->systemY->size);
 
-  femPoissonSolve(theProblem, omega, mu);
+  femPoissonSolve(theProblem, omega, mu, theGrains);
 
   printf("Maximum value : %.4f\n", femMax(theProblem->systemX->B,theProblem->systemX->size));
   printf("Maximum value : %.4f\n", femMax(theProblem->systemY->B,theProblem->systemY->size));
