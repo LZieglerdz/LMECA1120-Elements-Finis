@@ -15,7 +15,7 @@ int xComp(const void* e0, const void *e1) {
 		return -1;
 	}
 	else return 0;
-} 
+}
 
 int yComp(const void* e0, const void *e1) {
 	int *left = ((int *) e0);
@@ -26,7 +26,7 @@ int yComp(const void* e0, const void *e1) {
 	}
 	if (diagnostic > 0) {
 		return -1;
-	}	
+	}
 	else return 0;
 }
 
@@ -35,12 +35,12 @@ void femDiffusionRenumber(femDiffusionProblem *theProblem, femRenumType renumTyp
     int i;
     int nNode = theProblem->mesh->nNode;
     int buffer[nNode];
-    
+
     switch (renumType) {
         case FEM_NO :
             for (i = 0; i < nNode; i++) {
                 theProblem->number[i] = i;
-	    }    
+	    }
 	break;
         case FEM_XNUM :
 		for(i = 0; i < nNode; i++) {
@@ -52,7 +52,7 @@ void femDiffusionRenumber(femDiffusionProblem *theProblem, femRenumType renumTyp
 			theProblem->number[buffer[i]] = i;
 		}
 	break;
-        case FEM_YNUM : 
+        case FEM_YNUM :
 		for(i = 0; i < nNode; i++) {
 			        buffer[i] = i;
 		}
@@ -61,7 +61,7 @@ void femDiffusionRenumber(femDiffusionProblem *theProblem, femRenumType renumTyp
 		for (i = 0; i < nNode; i++) {
 			        theProblem->number[buffer[i]] = i;
 		}
-	break;            
+	break;
         default : Error("Unexpected renumbering option"); }
 }
 
@@ -85,19 +85,19 @@ int femDiffusionComputeBand(femDiffusionProblem *theProblem) {
 			mapMax = fmax(mapMax, map[j]);
 			mapMin = fmin(mapMin, map[j]);
 		}
-    		myBand = fmax(myBand, fabs(mapMax - mapMin));	
+    		myBand = fmax(myBand, fabs(mapMax - mapMin));
 //		printf("%.2d\n", myBand);
 	}
 	return(myBand + 1);
 }
 
 void femIterativeSolverAssemble(femIterativeSolver* mySolver, double *Aloc, double *Bloc, double *Uloc, int *map, int nLoc) {
-   
-       	
+
+
 	int i,j;
-	for (i = 0; i < nLoc; i++) { 
+	for (i = 0; i < nLoc; i++) {
 		int myRow = map[i];
-		for(j = 0; j < nLoc; j++) {       
+		for(j = 0; j < nLoc; j++) {
 			mySolver->R[myRow] -= Aloc[i*nLoc+j]*Uloc[j];
 		}
 		mySolver->R[myRow] += Bloc[i];		//https://en.wikipedia.org/wiki/Band_matrix#Band_storage
@@ -107,17 +107,14 @@ void femIterativeSolverAssemble(femIterativeSolver* mySolver, double *Aloc, doub
 		for (j = 0; j < nLoc; j++) {
 			int col = map[j];
 			mySolver->S[row] -= Aloc[i*nLoc+j] * mySolver->D[col];
+		}
 	}
-   } 
-
-
-
 }
 
-void femIterativeSolverConstrain(femIterativeSolver* mySolver, int myNode, double myValue) {   
+void femIterativeSolverConstrain(femIterativeSolver* mySolver, int myNode, double myValue) {
 	mySolver->X[myNode] = 0;
 	mySolver->D[myNode] = 0;
-	mySolver->R[myNode] = 0; 
+	mySolver->R[myNode] = 0;
 	mySolver->S[myNode] = 0;
 }
 
@@ -136,13 +133,13 @@ double *femIterativeSolverEliminate(femIterativeSolver *mySolver) {
     mySolver->iter++;
     int i, size = mySolver->size;
 
-    
+
     double error = 0.0;
     for (i = 0; i < size; i++) {
 	mySolver->S[i] = 0;
         error = (mySolver->R[i])*(mySolver->R[i]);
     }
-    
+
     if (mySolver->iter==1) {
 	for (i = 0; i < size; i++) {
 		mySolver->X[i] = 0;
@@ -162,13 +159,13 @@ double *femIterativeSolverEliminate(femIterativeSolver *mySolver) {
 	}
 
     }
-     
+
     mySolver->error = sqrt(error);
 /*
 	double alpha = - ( scalar(mySolver->R, mySolver->R, size) / scalar(mySolver->S, mySolver->R, size) );
 	double rk1[size];
 	for (i = 0; i < size; i++) {
-		rk1[i] = mySolver->R[i] + alpha * mySolver->S[i];		
+		rk1[i] = mySolver->R[i] + alpha * mySolver->S[i];
 	}
 	double beta = scalar(rk1, rk1, size) / scalar(mySolver->R, mySolver->R, size);
 

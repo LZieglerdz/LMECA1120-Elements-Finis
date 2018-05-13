@@ -497,8 +497,7 @@ double* femFullSystemEliminate(femFullSystem *mySystem)
     return(mySystem->B);
 }
 
-void  femFullSystemConstrain(femFullSystem *mySystem,
-                             int myNode, double myValue)
+void  femFullSystemConstrain(femFullSystem *mySystem,int myNode, double myValue)
 {
     double  **A, *B;
     int     i, size;

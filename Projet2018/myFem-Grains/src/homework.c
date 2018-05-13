@@ -84,7 +84,7 @@ void femMeshLocal(const femMesh *theMesh, const int i, int *map, double *x, doub
 # endif
 # ifndef NOPOISSONSOLVE
 
-double radius(femPoissonProblem *theProblem){
+double radOut(femPoissonProblem *theProblem){
   int i;
   femMesh *theMesh = theProblem->mesh;
   double rad = 0;
@@ -93,6 +93,23 @@ double radius(femPoissonProblem *theProblem){
     double y = theMesh->Y[i];
     double dist = sqrt(pow(x,2)+pow(y,2));
     if (dist > rad){
+      rad = dist;
+    }
+  }
+  return rad;
+}
+
+double radIn(femPoissonProblem *theProblem){
+  int i;
+  femMesh *theMesh = theProblem->mesh;
+  double x = theMesh->X[0];
+  double y = theMesh->Y[0];
+  double rad = sqrt(pow(x,2)+pow(y,2));
+  for (i=1; i < theMesh->nNode; i++){
+    x = theMesh->X[i];
+    y = theMesh->Y[i];
+    double dist = sqrt(pow(x,2)+pow(y,2));
+    if (dist < rad){
       rad = dist;
     }
   }
@@ -130,7 +147,7 @@ void femPoissonSolve(femPoissonProblem *theProblem, double omega, double mu, fem
   int nLocalNode = theProblem->mesh->nLocalNode;
   int n = myGrains->n;
 
-  double outerRad = radius(theProblem);
+  double outerRad = radOut(theProblem);
   double critRad = .9*outerRad;
   double gamma       = myGrains->gamma;
   double *vy         = myGrains->vy;

@@ -136,5 +136,8 @@ void        femError(char *text, int line, char *file);
 void        femErrorScan(int test, int line, char *file);
 void        femWarning(char *text, int line, char *file);
 
+double      radIn(femPoissonProblem *theProblem);
+double      radOut(femPoissonProblem *theProblem);
+
 
 #endif

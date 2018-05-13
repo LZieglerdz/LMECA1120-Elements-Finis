@@ -11,14 +11,15 @@
 
 int main(void)
 {
+  femPoissonProblem* theProblem = femPoissonCreate("../data/meshMedium.txt");
 
   int    n = 250;
   double omega = M_PI;   //En rad/s
-  double mu = 1;
+  double mu = 1*pow(10,8);
   double radius    = 0.03;
   double mass      = 0.1;
-  double radiusIn  = 0.5;
-  double radiusOut = 2.0;
+  double radiusIn  = radIn(theProblem);
+  double radiusOut = radOut(theProblem);
   double dt      = 1e-1;
   double tEnd    = 8.0;
   double tol     = 1e-6;
@@ -26,7 +27,8 @@ int main(void)
   double iterMax = 100;
   femGrains* theGrains = femGrainsCreateSimple(n,radius,mass,radiusIn,radiusOut);
 
-  femPoissonProblem* theProblem = femPoissonCreate("../data/meshMedium.txt");
+
+
 
   printf("Number of elements    : %4d\n", theProblem->mesh->nElem);
   printf("Number of local nodes : %4d\n", theProblem->mesh->nLocalNode);
