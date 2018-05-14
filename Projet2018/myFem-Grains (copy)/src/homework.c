@@ -191,12 +191,14 @@ void femPoissonSolve(femPoissonProblem *theProblem, double omega, double mu, fem
 				for (j = 0; j < theProblem->space->n; j++) {
 					double f = (dphidx[i]*dphidx[j] + dphidy[i]*dphidy[j]) * jacobian;
 					theProblem->systemX->A[map[i]][map[j]] += weight * f * mu;
+          //printf("first %f \n", theProblem->systemX->A[map[i]][map[j]]);
           theProblem->systemY->A[map[i]][map[j]] += weight * f * mu;
           for (k = 0; k < myGrains->n; k++){
             int elem = grainTriangle[k];
             if ( elem*3+0 == i || elem*3+1 == i || elem*3+2 == i  ){
               if ( elem*3+0 == j || elem*3+1 == j || elem*3+2 == j){
                 theProblem->systemX->A[map[i]][map[j]] += gamma * tau(theProblem, i, elem ) * tau(theProblem, j, elem );
+                //printf("second %f \n", theProblem->systemX->A[map[i]][map[j]]);
                 theProblem->systemY->A[map[i]][map[j]] += gamma * tau(theProblem, i, elem ) * tau(theProblem, j, elem );
               }
             }
@@ -224,29 +226,29 @@ void femPoissonSolve(femPoissonProblem *theProblem, double omega, double mu, fem
       if (theProblem->edges->edges[edge].elem[1] < 0 && dist > critRad && x >= 0 && y >= 0) {
 			 	for (i = 0; i < 2; i++) {
 			 		int node = theProblem->edges->edges[edge].node[i];
-			 		femFullSystemConstrain(theProblem->systemX,node,-fabs(y/outerRad)*omega);
-           femFullSystemConstrain(theProblem->systemY,node,fabs(x/outerRad)*omega);
+			 		femFullSystemConstrain(theProblem->systemX,node,+fabs(y/outerRad)*omega);
+           femFullSystemConstrain(theProblem->systemY,node,-fabs(x/outerRad)*omega);
 			 	}
 			 }
        if (theProblem->edges->edges[edge].elem[1] < 0 && dist > critRad && x <= 0 && y >= 0) {
 			 	for (i = 0; i < 2; i++) {
 			 		int node = theProblem->edges->edges[edge].node[i];
-			 		femFullSystemConstrain(theProblem->systemX,node,-fabs(y/outerRad)*omega);
-           femFullSystemConstrain(theProblem->systemY,node,-fabs(x/outerRad)*omega);
+			 		femFullSystemConstrain(theProblem->systemX,node,+fabs(y/outerRad)*omega);
+           femFullSystemConstrain(theProblem->systemY,node,+fabs(x/outerRad)*omega);
 			 	}
 			 }
        if (theProblem->edges->edges[edge].elem[1] < 0 && dist > critRad && x <= 0 && y <= 0) {
 			 	for (i = 0; i < 2; i++) {
 			 		int node = theProblem->edges->edges[edge].node[i];
-			 		femFullSystemConstrain(theProblem->systemX,node,fabs(y/outerRad)*omega);
-           femFullSystemConstrain(theProblem->systemY,node,-fabs(x/outerRad)*omega);
+			 		femFullSystemConstrain(theProblem->systemX,node,-fabs(y/outerRad)*omega);
+           femFullSystemConstrain(theProblem->systemY,node,+fabs(x/outerRad)*omega);
 			 	}
 			 }
        if (theProblem->edges->edges[edge].elem[1] < 0 && dist > critRad && x >= 0 && y <= 0) {
 			 	for (i = 0; i < 2; i++) {
 			 		int node = theProblem->edges->edges[edge].node[i];
-			 		femFullSystemConstrain(theProblem->systemX,node,fabs(y/outerRad)*omega);
-           femFullSystemConstrain(theProblem->systemY,node,fabs(x/outerRad)*omega);
+			 		femFullSystemConstrain(theProblem->systemX,node,-fabs(y/outerRad)*omega);
+           femFullSystemConstrain(theProblem->systemY,node,-fabs(x/outerRad)*omega);
 			 	}
 			 }
 		}
@@ -346,7 +348,6 @@ void femGrainsUpdate(femPoissonProblem *theProblem, femGrains *myGrains, double 
 
     femFullSystem *theSystemX = theProblem->systemX;
     femFullSystem *theSystemY = theProblem->systemY;
-
 
     int grainTriangle[n];
     for (i = 0; i < n; i++){

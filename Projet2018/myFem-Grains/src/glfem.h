@@ -39,4 +39,5 @@ void    glfemDrawMessage(int h, int v, char *message);
 void    glfemSetRasterSize(int width, int height);
 GLFWwindow* glfemInit(char *windowName);
 
+
 #endif

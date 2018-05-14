@@ -9,11 +9,11 @@ CMakeFiles/myFem.dir/src/glfem.c.o: ../src/fem.h
 CMakeFiles/myFem.dir/src/glfem.c.o: ../src/glfem.c
 CMakeFiles/myFem.dir/src/glfem.c.o: ../src/glfem.h
 
-CMakeFiles/myFem.dir/src/homework.c.o: ../src/fem.h
-CMakeFiles/myFem.dir/src/homework.c.o: ../src/homework.c
-
 CMakeFiles/myFem.dir/src/main.c.o: ../glfw-3.2.1/include/GLFW/glfw3.h
 CMakeFiles/myFem.dir/src/main.c.o: ../src/fem.h
 CMakeFiles/myFem.dir/src/main.c.o: ../src/glfem.h
 CMakeFiles/myFem.dir/src/main.c.o: ../src/main.c
+
+CMakeFiles/myFem.dir/src/project.c.o: ../src/fem.h
+CMakeFiles/myFem.dir/src/project.c.o: ../src/project.c
 

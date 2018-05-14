@@ -203,33 +203,6 @@ src/glfem.c.s:
 	$(MAKE) -f CMakeFiles/myFem.dir/build.make CMakeFiles/myFem.dir/src/glfem.c.s
 .PHONY : src/glfem.c.s
 
-src/homework.o: src/homework.c.o
-
-.PHONY : src/homework.o
-
-# target to build an object file
-src/homework.c.o:
-	$(MAKE) -f CMakeFiles/myFem.dir/build.make CMakeFiles/myFem.dir/src/homework.c.o
-.PHONY : src/homework.c.o
-
-src/homework.i: src/homework.c.i
-
-.PHONY : src/homework.i
-
-# target to preprocess a source file
-src/homework.c.i:
-	$(MAKE) -f CMakeFiles/myFem.dir/build.make CMakeFiles/myFem.dir/src/homework.c.i
-.PHONY : src/homework.c.i
-
-src/homework.s: src/homework.c.s
-
-.PHONY : src/homework.s
-
-# target to generate assembly for a file
-src/homework.c.s:
-	$(MAKE) -f CMakeFiles/myFem.dir/build.make CMakeFiles/myFem.dir/src/homework.c.s
-.PHONY : src/homework.c.s
-
 src/main.o: src/main.c.o
 
 .PHONY : src/main.o
@@ -257,6 +230,33 @@ src/main.c.s:
 	$(MAKE) -f CMakeFiles/myFem.dir/build.make CMakeFiles/myFem.dir/src/main.c.s
 .PHONY : src/main.c.s
 
+src/project.o: src/project.c.o
+
+.PHONY : src/project.o
+
+# target to build an object file
+src/project.c.o:
+	$(MAKE) -f CMakeFiles/myFem.dir/build.make CMakeFiles/myFem.dir/src/project.c.o
+.PHONY : src/project.c.o
+
+src/project.i: src/project.c.i
+
+.PHONY : src/project.i
+
+# target to preprocess a source file
+src/project.c.i:
+	$(MAKE) -f CMakeFiles/myFem.dir/build.make CMakeFiles/myFem.dir/src/project.c.i
+.PHONY : src/project.c.i
+
+src/project.s: src/project.c.s
+
+.PHONY : src/project.s
+
+# target to generate assembly for a file
+src/project.c.s:
+	$(MAKE) -f CMakeFiles/myFem.dir/build.make CMakeFiles/myFem.dir/src/project.c.s
+.PHONY : src/project.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -274,12 +274,12 @@ help:
 	@echo "... src/glfem.o"
 	@echo "... src/glfem.i"
 	@echo "... src/glfem.s"
-	@echo "... src/homework.o"
-	@echo "... src/homework.i"
-	@echo "... src/homework.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/project.o"
+	@echo "... src/project.i"
+	@echo "... src/project.s"
 .PHONY : help
 
 

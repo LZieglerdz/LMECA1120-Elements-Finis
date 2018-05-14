@@ -10,7 +10,7 @@
 
 #include "fem.h"
 
-femGrains *femGrainsCreateSimple(int n, double r, double m, double radiusIn, double radiusOut)
+femGrains *femGrainsCreateSimple(int n, double r, double m, double radiusIn, double radiusOut, double gamma)
 {
     int i,nContact = n*(n-1)/2;
 
@@ -20,7 +20,7 @@ femGrains *femGrainsCreateSimple(int n, double r, double m, double radiusIn, dou
     theGrains->radiusOut = radiusOut;
     theGrains->gravity[0] =  0.0;
     theGrains->gravity[1] = -9.81;
-    theGrains->gamma = 0.5;
+    theGrains->gamma = gamma;
 
 
     theGrains->x  = malloc(n*sizeof(double));

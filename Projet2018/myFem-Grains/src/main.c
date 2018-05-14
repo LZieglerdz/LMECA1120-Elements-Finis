@@ -13,22 +13,33 @@ int main(void)
 {
   femPoissonProblem* theProblem = femPoissonCreate("../data/meshMedium.txt");
 
-  int    n = 250;
-  double omega = M_PI;   //En rad/s
-  double mu = 1*pow(10,8);
-  double radius    = 0.03;
-  double mass      = 0.1;
-  double radiusIn  = radIn(theProblem);
-  double radiusOut = radOut(theProblem);
-  double dt      = 1e-1;
-  double tEnd    = 8.0;
-  double tol     = 1e-6;
-  double t       = 0;
-  double iterMax = 100;
-  femGrains* theGrains = femGrainsCreateSimple(n,radius,mass,radiusIn,radiusOut);
+  int    n = 42;
+  double radiusIn   = radIn(theProblem);
+  double radiusOut  = radOut(theProblem);
+
+  float omegaf;
+  float muf;
+
+  printf("enter angular velocity between 0 and 4 >>");
+  scanf("%f", &omegaf);
+  printf("enter viscosity between 10^-3 and 10^8 >>");
+  scanf("%f", &muf);
+
+
+  double omega      = (double) omegaf;//En rad/s ->max 4
+  double mu         = (double) muf;  //min 10-3 ;max 10-8
+  double gamma      = 0.47;    // max 1.5
+  double radius     = 0.05;
+  double mass       = 0.1;
+  double dt       = 1e-1;
+  double tEnd       = 8.0;
+  double tol        = 1e-6;
+  double t          = 0;
+  double iterMax    = 100;
 
 
 
+  femGrains* myGrains = femGrainsCreateSimple(n,radius,mass,radiusIn,radiusOut, gamma);
 
   printf("Number of elements    : %4d\n", theProblem->mesh->nElem);
   printf("Number of local nodes : %4d\n", theProblem->mesh->nLocalNode);
@@ -36,7 +47,7 @@ int main(void)
   printf("Number of unknowns(x) : %4d\n", theProblem->systemX->size);
   printf("Number of unknowns(y) : %4d\n", theProblem->systemY->size);
 
-  femPoissonSolve(theProblem, omega, mu, theGrains);
+  femPoissonSolve(theProblem, omega, mu, myGrains);
 
   printf("Maximum value : %.4f\n", femMax(theProblem->systemX->B,theProblem->systemX->size));
   printf("Maximum value : %.4f\n", femMax(theProblem->systemY->B,theProblem->systemY->size));
@@ -45,10 +56,6 @@ int main(void)
   char theMessage[256];
   sprintf(theMessage, "Max : %.4f", femMax(theProblem->systemX->B,theProblem->systemX->size));
   sprintf(theMessage, "Max : %.4f", femMax(theProblem->systemY->B,theProblem->systemY->size));
-
-
-  //  A decommenter pour obtenir l'exemple de la seance d'exercice :-)
-  //  femGrains* theGrains = femGrainsCreateTiny(radiusIn,radiusOut);;
 
     GLFWwindow* window = glfemInit("MECA1120 : Projet 2018 - Un Poisson dans une machine à laver");
     glfwMakeContextCurrent(window);
@@ -67,14 +74,25 @@ int main(void)
         }
         glfemPlotField(theProblem->mesh, u );
 
-        for (i=0 ;i < theGrains->n; i++) {
-            glColor3f(102/255,255/255,102/255);
-            glfemDrawDisk(theGrains->x[i],theGrains->y[i],theGrains->r[i]); }
+        for (i=0 ;i < myGrains->n; i++) {
+            glColor3f(0,0,0);
+            glfemDrawDisk(myGrains->x[i],myGrains->y[i],myGrains->r[i]);
+          }
         glColor3f(0,0,0); glfemDrawCircle(0,0,radiusOut);
         glColor3f(0,0,0); glfemDrawCircle(0,0,radiusIn);
         char theMessage[256];
+        char theVisco[256];
+        char theDrag[256];
+        char theVelocity[256];
+        sprintf(theVelocity,"Angular Velocity = %.2f rad\n",omega);
+        sprintf(theVisco,"Viscosity = %.2e Pa*s\n",mu);
+        sprintf(theDrag,"Drag = %.2f",gamma);
         sprintf(theMessage,"Time = %g sec",t);
-        glColor3f(1,0,0); glfemDrawMessage(20,460,theMessage);
+        glColor3f(0,0,0); glfemDrawMessage(20,400,theMessage);
+        glColor3f(0,0,0); glfemDrawMessage(20,420,theVelocity);
+        glColor3f(0,0,0); glfemDrawMessage(20,440,theVisco);
+        glColor3f(0,0,0); glfemDrawMessage(20,460,theDrag);
+
         glfwSwapBuffers(window);
         glfwPollEvents();
 
@@ -85,7 +103,9 @@ int main(void)
   //          printf("press CR to compute the next time step >>");
   //          char c= getchar();
   //
-            femGrainsUpdate(theProblem, theGrains,dt,tol,iterMax);
+
+            femGrainsUpdate(theProblem, myGrains, dt, tol, iterMax, omega, mu);
+
             t += dt; }
 
         while ( glfwGetTime()-currentTime < theVelocityFactor ) {
@@ -100,6 +120,6 @@ int main(void)
 
 
     glfwTerminate();
-    femGrainsFree(theGrains);
+    femGrainsFree(myGrains);
     exit(EXIT_SUCCESS);
 }

@@ -360,7 +360,18 @@ void glfemMessage(char *message)
 GLFWwindow* glfemInit(char *theWindowName)
 {
     glfwInit();
-    GLFWwindow* window = glfwCreateWindow(480,480,"Simple example with graphics",NULL,NULL);
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+
+    glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+    glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+    glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+    glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+
+    GLFWwindow* window = glfwCreateWindow(mode->width-20, mode->height-20, "My Title", NULL, NULL);
+
+    //GLFWwindow* window = glfwCreateWindow(600,720,"Simple example with graphics",NULL,NULL);
     glfwMakeContextCurrent(window);
     glfemSetRasterSize(480,480);
     glfwSetWindowTitle(window,theWindowName);
