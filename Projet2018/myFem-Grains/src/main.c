@@ -13,31 +13,30 @@ int main(void)
 {
   femPoissonProblem* theProblem = femPoissonCreate("../data/meshMedium.txt");
 
-  int    n = 42;
-  double radiusIn   = radIn(theProblem);
-  double radiusOut  = radOut(theProblem);
 
-  float omegaf;
-  float muf;
+    float omegaf;
+    float muf;
+    float nGrains;
+    printf("enter number of grains >>");
+    scanf("%f", &nGrains);
+    printf("enter angular velocity between -4 and 4 >>");
+    scanf("%f", &omegaf);
+    printf("enter viscosity between 1e-3 and 1e8 >>");
+    scanf("%f", &muf);
 
-  printf("enter angular velocity between 0 and 4 >>");
-  scanf("%f", &omegaf);
-  printf("enter viscosity between 10^-3 and 10^8 >>");
-  scanf("%f", &muf);
-
-
-  double omega      = (double) omegaf;//En rad/s ->max 4
-  double mu         = (double) muf;  //min 10-3 ;max 10-8
-  double gamma      = 0.47;    // max 1.5
-  double radius     = 0.05;
-  double mass       = 0.1;
-  double dt       = 1e-1;
-  double tEnd       = 8.0;
-  double tol        = 1e-6;
-  double t          = 0;
-  double iterMax    = 100;
-
-
+    int    n          = (double) nGrains;
+    double radiusIn   = radIn(theProblem);
+    double radiusOut  = radOut(theProblem);
+    double omega      = (double) omegaf;  //En rad/s -> min -4, max 4
+    double mu         = (double) muf;     // -> min 10-3, max 10-8
+    double gamma      = 0.5;
+    double radius     = 0.05;
+    double mass       = 0.1;
+    double dt         = 1e-1;
+    double tEnd       = 8.0;
+    double tol        = 1e-6;
+    double t          = 0;
+    double iterMax    = 100;
 
   femGrains* myGrains = femGrainsCreateSimple(n,radius,mass,radiusIn,radiusOut, gamma);
 
@@ -98,26 +97,19 @@ int main(void)
 
         if (t < tEnd && theRunningMode == 1) {
             printf("Time = %4g : ",t);
-  //
-  // A decommenter pour pouvoir progresser pas par pas
-  //          printf("press CR to compute the next time step >>");
-  //          char c= getchar();
-  //
-
             femGrainsUpdate(theProblem, myGrains, dt, tol, iterMax, omega, mu);
-
-            t += dt; }
+            t += dt;
+          }
 
         while ( glfwGetTime()-currentTime < theVelocityFactor ) {
           if (glfwGetKey(window,'R') == GLFW_PRESS)
         	    theRunningMode = 1;
           if (glfwGetKey(window,'S') == GLFW_PRESS)
-        	    theRunningMode = 0; }
-
+        	    theRunningMode = 0;
+            }
     }
     while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
 	        (!glfwWindowShouldClose(window)));
-
 
     glfwTerminate();
     femGrainsFree(myGrains);
