@@ -1,13 +1,3 @@
-
-/*
- *  fem.h
- *  Library for MECA1120 : Finite Elements for dummies
- *
- *  Copyright (C) 2018 UCL-IMMC : Vincent Legat
- *  All rights reserved.
- *
- */
-
 #ifndef _FEM_H_
 #define _FEM_H_
 
@@ -21,7 +11,6 @@
 #define Warning(a)     femWarning(a,  __LINE__, __FILE__)
 #define FALSE 0
 #define TRUE  1
-
 
 typedef enum {FEM_TRIANGLE,FEM_QUAD} femElementType;
 
@@ -138,6 +127,5 @@ void        femWarning(char *text, int line, char *file);
 
 double      radIn(femPoissonProblem *theProblem);
 double      radOut(femPoissonProblem *theProblem);
-
 
 #endif

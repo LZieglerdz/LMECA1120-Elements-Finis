@@ -1,14 +1,37 @@
 #include "fem.h"
 #include <stdbool.h>
 
+double radOut(femPoissonProblem *theProblem){
+  int i;
+  femMesh *theMesh = theProblem->mesh;
+  double rad = 0;
+  for (i=0; i < theMesh->nNode; i++){
+    double x = theMesh->X[i];
+    double y = theMesh->Y[i];
+    double dist = sqrt(pow(x,2)+pow(y,2));
+    if (dist > rad){
+      rad = dist;
+    }
+  }
+  return rad;
+}
 
-/*
- * AUTHORS
- * Ziegler Laurent
- * Lacroix Arthur
- */
-
-
+double radIn(femPoissonProblem *theProblem){
+  int i;
+  femMesh *theMesh = theProblem->mesh;
+  double x = theMesh->X[0];
+  double y = theMesh->Y[0];
+  double rad = sqrt(pow(x,2)+pow(y,2));
+  for (i=1; i < theMesh->nNode; i++){
+    x = theMesh->X[i];
+    y = theMesh->Y[i];
+    double dist = sqrt(pow(x,2)+pow(y,2));
+    if (dist < rad){
+      rad = dist;
+    }
+  }
+  return rad;
+}
 
 bool checkTriangle(femMesh *theMesh, int elem, double xGrain, double yGrain){
  double x0 = theMesh->X[theMesh->elem[elem*theMesh->nLocalNode]];
@@ -84,38 +107,6 @@ void femMeshLocal(const femMesh *theMesh, const int i, int *map, double *x, doub
 # endif
 # ifndef NOPOISSONSOLVE
 
-double radOut(femPoissonProblem *theProblem){
-  int i;
-  femMesh *theMesh = theProblem->mesh;
-  double rad = 0;
-  for (i=0; i < theMesh->nNode; i++){
-    double x = theMesh->X[i];
-    double y = theMesh->Y[i];
-    double dist = sqrt(pow(x,2)+pow(y,2));
-    if (dist > rad){
-      rad = dist;
-    }
-  }
-  return rad;
-}
-
-double radIn(femPoissonProblem *theProblem){
-  int i;
-  femMesh *theMesh = theProblem->mesh;
-  double x = theMesh->X[0];
-  double y = theMesh->Y[0];
-  double rad = sqrt(pow(x,2)+pow(y,2));
-  for (i=1; i < theMesh->nNode; i++){
-    x = theMesh->X[i];
-    y = theMesh->Y[i];
-    double dist = sqrt(pow(x,2)+pow(y,2));
-    if (dist < rad){
-      rad = dist;
-    }
-  }
-  return rad;
-}
-
 double tau(femPoissonProblem *theProblem, int i, int iElem){
   femMesh *theMesh = theProblem->mesh;
   int nLocalNode = theMesh->nLocalNode;
@@ -182,31 +173,26 @@ void femPoissonSolve(femPoissonProblem *theProblem, double omega, double mu, fem
 				dydeta 	+= y[i]*dphideta[i];
 			}
 			double jacobian = fabs(dxdxi * dydeta - dydxi * dxdeta);
-			for (i = 0; i < theProblem->space->n; i++) {							//calcul des dphidx et dphidy
+			for (i = 0; i < theProblem->space->n; i++) {	
 				dphidx[i] = (1/jacobian) * (dphidxi[i]*dydeta - dphideta[i]*dydxi);
 				dphidy[i] = (1/jacobian) * (dphidxi[i]*dxdeta - dphideta[i]*dxdxi);
 			}
 
-			for (i = 0; i < theProblem->space->n; i++) {							//remplissage de la matrice A par integration
+			for (i = 0; i < theProblem->space->n; i++) {
 				for (j = 0; j < theProblem->space->n; j++) {
 					double f = (dphidx[i]*dphidx[j] + dphidy[i]*dphidy[j]) * jacobian;
 					theProblem->systemX->A[map[i]][map[j]] += weight * f * mu;
-          //printf("first %f \n", theProblem->systemX->A[map[i]][map[j]]);
+
           theProblem->systemY->A[map[i]][map[j]] += weight * f * mu;
           for (k = 0; k < myGrains->n; k++){
             int elem = grainTriangle[k];
-            //if ( elem*3+0 == i || elem*3+1 == i || elem*3+2 == i  ){
-            //  if ( elem*3+0 == j || elem*3+1 == j || elem*3+2 == j){
                 theProblem->systemX->A[map[i]][map[j]] += gamma * tau(theProblem, i, elem ) * tau(theProblem, j, elem );
-                //printf("second %f \n", theProblem->systemX->A[map[i]][map[j]]);
                 theProblem->systemY->A[map[i]][map[j]] += gamma * tau(theProblem, i, elem ) * tau(theProblem, j, elem );
-            //  }
-          //  }
           }
 				}
         for (k = 0; k < myGrains->n; k++){
-				  theProblem->systemX->B[map[i]] += gamma * vx[k] * tau(theProblem, i, elem )/*tauX(theMesh, i, nLocalNode,theProblem->rule->xsi, theProblem->rule->eta)*/;
-          theProblem->systemY->B[map[i]] += gamma * vy[k] * tau(theProblem, i, elem )/*tauY(theMesh, i, nLocalNode,theProblem->rule->xsi, theProblem->rule->eta)*/;
+				  theProblem->systemX->B[map[i]] += gamma * vx[k] * tau(theProblem, i, elem );
+          theProblem->systemY->B[map[i]] += gamma * vy[k] * tau(theProblem, i, elem );
         }
       }
 		}
@@ -258,7 +244,6 @@ void femPoissonSolve(femPoissonProblem *theProblem, double omega, double mu, fem
 }
 
 # endif
-
 
 # ifndef NOCONTACTITERATE
 
@@ -356,11 +341,6 @@ void femGrainsUpdate(femPoissonProblem *theProblem, femGrains *myGrains, double 
     for (i = 0; i < n; i++){
       grainTriangle[i] = whereIsBrian(theProblem->mesh, myGrains->x[i], myGrains->y[i]);
     }
-
-//
-// -1- Calcul des nouvelles vitesses des grains sur base de la gravit� et de la trainee
-//
-
     for(i = 0; i < n; i++) {
       int elem = grainTriangle[i];
       int locNode = theProblem->mesh->nLocalNode;
@@ -376,10 +356,6 @@ void femGrainsUpdate(femPoissonProblem *theProblem, femGrains *myGrains, double 
       vy[i] += fy * dt / m[i];
     }
 
-//
-// -2- Correction des vitesses pour tenir compte des contacts
-//
-
     int iter = 0;
     double error;
 
@@ -388,10 +364,6 @@ void femGrainsUpdate(femPoissonProblem *theProblem, femGrains *myGrains, double 
         iter++; }
     while ((error > tol/dt && iter < iterMax) || iter == 1);
     printf("iterations = %4d : error = %14.7e \n",iter-1,error);
-
-//
-// -3- Calcul des nouvelles positions sans penetrations de points entre eux
-//
 
     for (i = 0; i < n; ++i) {
         x[i] += vx[i] * dt;

@@ -221,9 +221,9 @@ void femDiscretePrint(femDiscrete *mySpace)
 
         for (j=0; j < n; j++)  {
             printf("(xsi=%+.1f,eta=%+.1f) : ",xsi[i],eta[i]);
-            printf(" phi(%d)=%+.1f",j,phi[j]);
-            printf("   dphidxsi(%d)=%+.1f",j,dphidxsi[j]);
-            printf("   dphideta(%d)=%+.1f \n",j,dphideta[j]);
+            printf("phi(%d)=%+.1f",j,phi[j]);
+            printf("dphidxsi(%d)=%+.1f",j,dphidxsi[j]);
+            printf("dphideta(%d)=%+.1f \n",j,dphideta[j]);
           }
         printf(" \n");
       }
@@ -430,8 +430,8 @@ void femFullSystemInit(femFullSystem *mySystem)
 {
     int i,size = mySystem->size;
     for (i=0 ; i < size*(size+1) ; i++)
-        mySystem->B[i] = 0;}
-
+        mySystem->B[i] = 0;
+}
 
 void femFullSystemPrint(femFullSystem *mySystem)
 {

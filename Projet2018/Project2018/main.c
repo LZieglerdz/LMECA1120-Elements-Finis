@@ -1,12 +1,3 @@
-/*
- *  main.c
- *  Library for MECA1120 : Finite Elements for dummies
- *
- *  Copyright (C) 2018 UCL-IMMC : Vincent Legat
- *  All rights reserved.
- *
- */
-
 #include "glfem.h"
 
 int main(void)
@@ -16,11 +7,11 @@ int main(void)
     float omegaf;
     float muf;
     float nGrains;
-    printf("enter number of grains >>");
+    printf("enter number of grains (max 140) >>");
     scanf("%f", &nGrains);
     printf("enter angular velocity between -4 and 4 >>");
     scanf("%f", &omegaf);
-    printf("enter viscosity between 1e-3 and 1e8 >>");
+    printf("enter viscosity between 1e-3 and 1e12 >>");
     scanf("%f", &muf);
 
     int    n          = (double) nGrains;
@@ -29,7 +20,7 @@ int main(void)
     double omega      = (double) omegaf;  //En rad/s -> min -4, max 4
     double mu         = (double) muf;     // -> min 10-3, max 10-8
     double gamma      = 0.5;
-    double radius     = 0.05;
+    double radius     = 0.0225;
     double mass       = 0.1;
     double dt         = 1e-1;
     double tEnd       = 8.0;
@@ -78,15 +69,18 @@ int main(void)
             }
           glColor3f(0,0,0); glfemDrawCircle(0,0,radiusOut);
           glColor3f(0,0,0); glfemDrawCircle(0,0,radiusIn);
-          char theMessage[256];
+          char theTime[256];
+          char theNumber[256];
           char theVisco[256];
           char theDrag[256];
           char theVelocity[256];
           sprintf(theVelocity,"Angular Velocity = %.2f rad\n",omega);
           sprintf(theVisco,"Viscosity = %.2e Pa*s\n",mu);
-          sprintf(theDrag,"Drag = %.2f",gamma);
-          sprintf(theMessage,"Time = %g sec",t);
-          glColor3f(0,0,0); glfemDrawMessage(20,400,theMessage);
+          sprintf(theDrag,"Drag Coefficient= %.2f",gamma);
+          sprintf(theNumber,"%d Grains",n);
+          sprintf(theTime,"Time = %g sec",t);
+          glColor3f(0,0,0); glfemDrawMessage(20,380,theTime);
+          glColor3f(0,0,0); glfemDrawMessage(20,400,theNumber);
           glColor3f(0,0,0); glfemDrawMessage(20,420,theVelocity);
           glColor3f(0,0,0); glfemDrawMessage(20,440,theVisco);
           glColor3f(0,0,0); glfemDrawMessage(20,460,theDrag);

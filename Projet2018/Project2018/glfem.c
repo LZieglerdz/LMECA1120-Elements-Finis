@@ -1,17 +1,4 @@
-/*
- *  glfem.c
- *  Library for MECA1120 : Finite Elements for dummies
- *
- *  Copyright (C) 2018 UCL-IMMC : Vincent Legat
- *  All rights reserved.
- *
- *  Pour GLFW (version utilisée 3.1.2)
- *  Pour l'installation de la librairie, voir http://www.glfw.org/
- *
- */
-
 #include "glfem.h"
-
 
 void   glMakeRasterFont(void);
 void   glColor(double value, int numberOfColors, float* R, float* G, float* B);

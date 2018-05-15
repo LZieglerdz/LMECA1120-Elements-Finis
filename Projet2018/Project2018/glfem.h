@@ -1,15 +1,3 @@
-/*
- *  glfem.h
- *  Library for MECA1120 : Finite Elements for dummies
- *
- *  Copyright (C) 2018 UCL-EPL : Vincent Legat
- *  All rights reserved.
- *
- *  Pour GLFW (version utilisée 3.1.2)
- *  Pour l'installation de la librairie, voir http://www.glfw.org/
- *
- */
-
 #ifndef _GLFEM_H_
 #define _GLFEM_H_
 

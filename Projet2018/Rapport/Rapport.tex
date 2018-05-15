@@ -1,0 +1,228 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{esvect}
+\usepackage{indentfirst}
+\usepackage{amsmath}
+\usepackage{calrsfs}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[english,francais]{babel}
+\usepackage{enumitem}
+\usepackage{textcomp}
+\usepackage[T1]{fontenc}
+\usepackage{chemist}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{sidecap}
+\usepackage{subfigure}
+
+\title{\Huge{Synthèse de physique générale : électromagnétisme.}}
+\author{Lacroix Arthur} 
+\date{2016-2017 - Quadrimestre 1}
+
+\theoremstyle{definition}
+\newtheorem*{loi}{Loi}
+\newtheorem{definition}{Définition}[section]
+\newtheorem{exemple}{Exemple}[section]
+\newtheorem*{notation}{Notation}
+\newtheorem*{remark}{Remarque}
+
+%Commande pour les gradiant, divergence et rotationnel
+\newcommand{\grad}[1]{\vv{\nabla}#1}
+\newcommand{\diver}[1]{\vv{\nabla}.\vv{#1}}
+\newcommand{\rot}[1]{\vv{\nabla}\times\vv{#1}}
+
+%Commande pour faire une section dans qui ne commence pas par 0
+\renewcommand\thesection{\arabic{section}}
+
+%Commande pour faire des cadre avec ou sans titre
+\newcommand{\gi}[1]{\textbf{\textit{#1}}}
+\newcommand{\titlebox}[2]{
+	\tikzstyle{titlebox}=[rectangle,inner sep=10pt,inner ysep=10pt,draw]
+	\tikzstyle{title}=[fill=white]
+	\bigskip\noindent
+	\begin{tikzpicture}
+	\node[titlebox] (box){
+		\begin{minipage}{0.94\textwidth}
+		#2
+		\end{minipage}};
+	\node[title] at (box.north) {#1};
+	\end{tikzpicture}\bigskip}
+\newcommand{\cadre}[1]{
+	\tikzstyle{titlebox}=[rectangle,inner sep=10pt,inner ysep=10pt,draw]
+	\tikzstyle{title}=[fill=white]
+	\bigskip\noindent
+	\begin{tikzpicture}
+	\node[titlebox] (box){
+		\begin{minipage}{0.94\textwidth}
+		#1
+		\end{minipage}};
+	\end{tikzpicture}\bigskip}
+
+%Données de la page d'intro
+\newlength{\deca}
+\newcommand{\code}{LMECA 1210}
+\newcommand{\cours}{LMECA 1120: Projet d'éléments finis: groupe 87}
+\newcommand{\stitre}{Rapport}
+\newcommand{\ecole}{Polytechnique de Louvain}
+\newcommand{\dateb}{2017-2018}
+\setlength{\deca}{0mm}
+
+\urlstyle{same}
+
+\begin{document}
+
+\begin{titlepage}
+	\centering
+	{\rule{15.8cm}{1mm}}\vspace{3mm}
+	\begin{tabular}{p{\deca} r}
+		& \code \vspace{1mm}\\
+		& {\huge {\bf \cours}} \vspace{3mm}\\
+		& {\huge \stitre}
+	\end{tabular}\\
+	\vspace{1mm}
+	{\rule{15.8cm}{1mm}}
+	
+	\vspace{5cm}
+	
+	\begin{tabular}{p{8cm} l}
+	
+		& {\huge \bf Lacroix Arthur} \\
+		& {\huge \bf Ziegler Laurent} \\
+	
+		
+		
+	\end{tabular}\\
+	\vspace{5.5cm}
+	
+	\begin{minipage}[h]{0.5\textwidth}
+		\begin{flushright}
+			\begin{tabular}{p{0cm} c}
+				& {\Huge {\bf EPL}} \\
+				& {\huge Faculté des Sciences}\\
+				 &{\huge Appliquées}
+			\end{tabular}\\
+		\end{flushright}
+	\end{minipage}
+	\begin{minipage}[h]{0.3\textwidth}
+		\begin{flushright}
+			\begin{tabular}{p{10cm} c}
+\includegraphics[scale=0.1]{UCL_logo} 
+			\end{tabular}\\
+		\end{flushright}
+	\end{minipage}
+	
+	\vspace{10mm}
+	
+	\begin{tabular}{p{7cm} c}
+		& {\huge \bf \dateb} \\
+	\end{tabular}\\
+	
+\end{titlepage}
+
+
+\newpage
+
+\section{Imposition des conditions aux frontières}
+
+Pour trouver les conditions aux frontières, nous devons dans un premier temps imposer que la vitesse angulaire du cercle intérieur de rayon $R_1$ est nulle, d'où 
+
+$$ \mathbf{v} (R_1) = 0$$ 
+
+Ensuite nous devons imposer une vitesse angulaire sur le grand cercle de rayon $R_2$
+
+$$ \mathbf{v} (R_2) = \omega R_2$$ 
+
+Mais puisque la vitesse a une composante horizontale et verticale, nous obtenons 
+
+\begin{align*}
+u(R_1)& = 0 \\
+u(R_2) &= \omega R_2\\
+v(R_1)& = 0\\
+v(R_2) &= \omega R_2
+\end{align*}
+
+Puisque le profil de vitesse entre les deux cercles est linéaire, la vitesse du fluide situé à une distance $(x,y)$ est 
+
+$$\mathbf{v} (x,y) = R \omega$$
+
+avec $R$ le rayon du cercle considéré. En décomposant la vitesse selon $x$ et $y$ nous avons que 
+
+$$u(x)= \alpha u(R_2)$$
+
+et
+
+$$v(y)= \beta v(R_2)$$
+
+avec $\alpha = \frac{x}{R_2}$ et $\beta = \frac{y}{R_2}$. Puisque le signe de $x$ et $y$ change selon le quadrant dans lequel se trouve la particule, nous obtenons finalement les conditions suivantes 
+
+\begin{equation*}
+  \left\{
+      \begin{aligned}
+       u(x)&= |\alpha | \omega \quad \forall x \in [0, \frac{\pi}{2}] \cup [\frac{3 \pi}{2}, 2\pi]\\
+       u(x)&= -|\alpha | \omega \quad \forall x \in [ \frac{\pi}{2}, \pi] \cup [ \pi, \frac{3 \pi}{2}]\\
+       v(y)&= |\beta | \omega \quad \forall x \in [0, \frac{\pi}{2}] \cup [\frac{\pi}{2} , \pi]\\
+       v(y)&= -|\beta | \omega \quad \forall x \in [\pi, \frac{3\pi}{2}] \cup [\frac{3\pi}{2} , 2\pi]\\
+      \end{aligned}
+    \right.
+\end{equation*}
+
+%\section{Implémentation des fonctions de forme}
+%
+%Pour implémenter les fonctions de formes d'un triangle quelconque, nous sommes partis des fonctions de forme de l'élément parent. Nous avons ensuite isolé $\xi$ et $\eta$ dans ces deux équations et nous avons trouvé 
+%
+%\begin{equation*}
+%  \left\{
+%      \begin{aligned}
+%\xi   &= \frac{(X_1*(Y_3-y)-X_3*(Y_1-y)-x*(Y_3-Y_1))}{(X_1*(Y_3-Y_2)+X_2*(Y_1-Y_3)+X_3*(Y_2-Y_1))}\\
+%\eta &= \frac{(X_1*(Y_2-y)-X_3*(Y_1-y)-x*(Y_2-T_1))}{(X_1*(Y_2-Y_3)+X_2*(Y_3-Y_1)+X_3*(Y_1-Y_2))}
+%      \end{aligned}
+%    \right.
+%\end{equation*}
+%
+%où les $X_i$ et $Y_i$, $i=1,2,3$ sont simplement donnés par les coordonnées $(x,y)$ du sommet 1,2 et 3 du triangle considéré. \\
+
+Les résultats obtenus pour des vitesses et viscosités dans une certaine gamme de grandeur sont assez intuitifs. En effet, plus la viscosité augmente et plus les grains sont emportés avec le fluide. Cela parait a priori logique puisqu'un fluide visqueux aura une plus grande tendance à être entraîné par le cercle en rotation. La vitesse décroit donc plus lentement en fonction de la distance par rapport au cercle extérieur. \\
+
+\section{Améliorations apportées au programme de base}
+
+Nous avons aussi procédé à quelques petits changements graphiques simples. La fenêtre s'ouvre en plein écran et on y trouve différents informations : temps, vitesse angulaire, viscosité, nombre de billes et le coefficient de trainée. Nous pouvons entrer la valeurs de ces paramètres directement dans le terminal ce qui évite de devoir ouvrir un IDE et donc de modifier et de recompiler à chaque fois le programme. 
+
+\section{Pistes d'améliorations}
+
+A haute vitesse, on observe la sortie des billes du maillage. Ce phénomène est peut-être du à une propagation des erreurs dans le solveur de contact. On aurait pu améliorer le solveur de contact pour qu'il ne calcule les corrections que pour les grains les plus susceptibles de s'entrechoquer, par exemple ceux qui viennent de subir une collision entre eux ou ceux qui sont relativement proche par rapport à la masse de grain ou l'un par rapport à l'autre. \\
+
+On aurait pu réfléchir à améliorer l'algorithme de détection de contact avec les bords extérieurs car on y considère que la frontière est linéaire ce qui introduit une source d'erreur. \\
+
+
+Nous n'avons pas non plus d'itérations sur le calcul de l'intégrale. On aurait pu itérer pour chaque pas de temps et mettre à jour les vitesses du fluide modifiée par les grains. \\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
