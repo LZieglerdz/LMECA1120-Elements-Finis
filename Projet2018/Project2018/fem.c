@@ -94,7 +94,6 @@ static const double _gaussTri3Xsi[3]     = { 0.166666666666667, 0.66666666666666
 static const double _gaussTri3Eta[3]     = { 0.166666666666667, 0.166666666666667, 0.666666666666667};
 static const double _gaussTri3Weight[3]  = { 0.166666666666667, 0.166666666666667, 0.166666666666667};
 
-
 femIntegration *femIntegrationCreate(int n, femElementType type)
 {
     femIntegration *theRule = malloc(sizeof(femIntegration));
@@ -170,7 +169,6 @@ void _p1c0_dphidx(double xsi, double eta, double *dphidxsi, double *dphideta)
     dphideta[2] =  1.0;
 
 }
-
 
 femDiscrete *femDiscreteCreate(int n, femElementType type)
 {
