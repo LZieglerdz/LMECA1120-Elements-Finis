@@ -5,7 +5,8 @@ INSTALLING
 ----------
 
 1) unzip file
-2) execute in Linux terminal:
+2) include glfw-3.2.1 library in directory
+3) execute in Linux terminal:
 	cmake .
 	make
 
@@ -28,8 +29,9 @@ FRANCAIS
 INSTALLATION
 ------------
 
-1) Dezipper le dossier
-2) executer dans un terminal Linux:
+1) dezipper le dossier
+2) include glfw-3.2.1 library in directory
+3) executer dans un terminal Linux:
 	cmake.
 	make
 
